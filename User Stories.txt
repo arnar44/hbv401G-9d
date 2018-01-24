@@ -17,3 +17,13 @@
 9. As a website visitor, I want to see photos from day tours, so I know what to expect
 
 10. As a website visitor, I would like to see the duration of each tour so I can plan my day efficiently
+
+11. As a traveler, I would like to see the difficulty level of the tour, to see if it suits me.
+
+12. As a tourist, I would like to see the location of the tour, so I can plan my day efficiently.
+
+13. As a tourist, I want to be able to submit a rating and a review for the guide that was on the tour I've been on, to let others know my experience and what to expect.
+
+14. As a website visitor, I want to be able to see which guide is on each tour, to check his reviews and know what to expect.
+
+15. As a website visitor, I want to be able to see the itinerary for each tour, to know what to expect.
