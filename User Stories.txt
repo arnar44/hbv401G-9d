@@ -1,0 +1,19 @@
+1. As a marketing manager, I want to reply to reviews in public or private, in order to address any mentioned concerns.
+
+2. As a website visitor it is crucial for me that the website is available in english.
+
+3. As a customer, I want to endorse reviews that i agree with, to make the review more reliable.
+
+4. As a guide, I would like to filter out day trips available depending on the size of my customer group, to save me time while browsing tours.
+
+5. As a traveler, I would like to see tours that are on special offer, to be able to find something that i might like with better pricing.
+
+6. As a tourist, I want to submit a review for a day tour I've been on, to let others know what my experience was and what to expect
+
+7. As a webmaster, I want to be able to verify reviews before they appear on the website, to make sure it isn't spam
+
+8. As a website visitor, I want to see what tours are popular, so I don't have to spend time searching for good tours
+
+9. As a website visitor, I want to see photos from day tours, so I know what to expect
+
+10. As a website visitor, I would like to see the duration of each tour so I can plan my day efficiently
