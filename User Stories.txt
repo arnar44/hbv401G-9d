@@ -1,8 +1,14 @@
-1. As a marketing manager, I want to reply to reviews in public or private, in order to address any mentioned concerns.
+Arnar Pétursson	 arp25@hi.is
+Freyr Saputra Daníelsson fsd1@hi.is
+Leifur Daníel Sigurðarson lsd2@hi.is
 
-2. As a website visitor it is crucial for me that the website is available in english.
+Hópur 9D:
 
-3. As a customer, I want to endorse reviews that i agree with, to make the review more reliable.
+1. As a marketing manager, I want to reply to reviews in public or private, in order to address any mentioned concerns. (6)
+
+2. As a website visitor it is crucial for me that the website is available in english. (0)
+
+3. As a customer, I want to endorse reviews that i agree with, to make the review more reliable. 
 
 4. As a guide, I would like to filter out day trips available depending on the size of my customer group, to save me time while browsing tours.
 
