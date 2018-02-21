@@ -43,3 +43,5 @@ Hópur 9D:
 19. As a website visitor, I would like to receive a confirmation email for the trips I have booked, to ensure my booking took place.
 
 20. As a tourist, I would like to receive a reminder email the day before, so I don´t forget my trip. 
+
+21. hallo
