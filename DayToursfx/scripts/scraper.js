@@ -1,5 +1,6 @@
 require('isomorphic-fetch');
 const cheerio = require('cheerio');
+const sqlite3 = require('sqlite3').verbose();
 
 const util = require('util');
 
@@ -32,20 +33,15 @@ function getLinks($) {
 function maketour($) {
 	
 	const basicInfo = $('#sidebar .sidebar .box');
-	console.log(basicInfo.text());
-	
-	
-	
 
-/* 	basicInfo.each((i, info) => {
-		console.log(info);
-		console.log('t');
-		
-	}); */
+ 	basicInfo.each((i, info) => {
+		{
+			// spurning hvort ég scrapi stærri bita og minnka hann her
+		}
+	});
 }
 
 async function fetchTours(links) {
-	console.log(links);
 	
 	const tours = [];
 
@@ -63,6 +59,15 @@ async function fetchTours(links) {
 
 async function main() {
 	console.log('start');
+	const db = new sqlite3.Database('DayTours.db');
+
+	db.serialize(function() {
+		db.each("SELECT * FROM tours", function(err, row) {
+			console.log(row);
+	 });
+	});
+
+	
 	
 	const $ = await fetchBase();
 	

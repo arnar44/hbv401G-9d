@@ -12,7 +12,7 @@ create table reviews(
     tourId references tours(id),
     name varchar(64) NOT NULL,
     email varchar(84),
-    date Date /** ATH kanski varchar bara?
+    date Date,
     review text
 );
 
