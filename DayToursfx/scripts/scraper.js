@@ -62,6 +62,8 @@ async function main() {
 	const db = new sqlite3.Database('DayTours.db');
 
 	db.serialize(function() {
+		var stmt = db.prepare('insert into tours (title, location, duration, difficulty, iternirary) values (?,?,?,?,?)');
+		stmt.run('test2', 'test2', 'test2', 'test2', 'test2');
 		db.each("SELECT * FROM tours", function(err, row) {
 			console.log(row);
 	 });
