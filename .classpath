@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="DayToursfx/src"/>
+	<classpathentry kind="src" path="DayToursfx/test"/>
+	<classpathentry kind="lib" path="DayToursfx/src/lib/sqlite-jdbc-3.18.0.jar"/>
+	<classpathentry kind="output" path="DayToursfx/bin"/>
+</classpath>
