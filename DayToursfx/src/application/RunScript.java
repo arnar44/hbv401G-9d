@@ -7,6 +7,6 @@ public class RunScript {
 	   ProcessBuilder pb = new ProcessBuilder("scripts/test.sh", "");
 	   pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
 	   pb.redirectError(ProcessBuilder.Redirect.INHERIT);
-	   
+	   pb.start();
   }
 }
