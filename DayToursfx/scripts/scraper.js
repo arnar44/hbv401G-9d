@@ -59,16 +59,17 @@ async function fetchTours(links) {
 
 async function main() {
 	console.log('start');
-	const db = new sqlite3.Database('DayTours.db');
 
+/* 	
+	const db = new sqlite3.Database('DayTours.db');
 	db.serialize(function() {
 		var stmt = db.prepare('insert into tours (title, location, duration, difficulty, iternirary) values (?,?,?,?,?)');
-		stmt.run('test2', 'test2', 'test2', 'test2', 'test2');
+		stmt.run('test2', '500', 'test2', 'test2', 'test2', 'test2');
 		db.each("SELECT * FROM tours", function(err, row) {
 			console.log(row);
 	 });
 	});
-
+ */
 	
 	
 	const $ = await fetchBase();
@@ -77,7 +78,6 @@ async function main() {
 	fetchTours(links);
 	
 	console.log('finito');
-	
 }
 
 main();

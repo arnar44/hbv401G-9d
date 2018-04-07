@@ -6,7 +6,7 @@ public class Booking {
 	
 	public Booking(int id, Purchaser client) {
 		this.id = id;
-		this.client = cliens;
+		this.client = client;
 	}
 	
 	public int getId() {
