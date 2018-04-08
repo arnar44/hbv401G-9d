@@ -15,7 +15,7 @@ create table reviews(
     email varchar(84),
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     review text,
-		accepted INTEGER NOT NULL
+	accepted INTEGER NOT NULL
 );
 
 create table bookings(
