@@ -67,7 +67,7 @@ async function fetchTours(links) {
 }
 
 async function main() {
-	console.log('start');
+	console.log('running scraper');
  	
 	
 	const $ = await fetchBase();
@@ -77,7 +77,7 @@ async function main() {
 	
 	const db = new sqlite3.Database('database/DayTours.db');
 	db.serialize(function() {
-		var stmt = db.prepare('insert into tours (title, price, location, duration, difficulty, description) values (?,?,?,?,?,?)');
+		const stmt = db.prepare('insert into tours (title, price, location, duration, difficulty, description) values (?,?,?,?,?,?)');
 
 		tours.forEach(dayTour => {
 			const {
@@ -89,15 +89,14 @@ async function main() {
 				description
 			} = dayTour;
 
-			stmt.run(title, price, duration, difficulty, departures, description);
+				stmt.run([title, price, duration, difficulty, departures, description], 
+				function(err, row) {
+					console.error('row already exists');
+				});
 		});
-		
-		db.each("SELECT * FROM tours", function(err, row) {
-			console.log(row);
-	 	});
 	});
 	
-	console.log('finito');
+	db.close();
 }
 
 main();
