@@ -1,8 +1,7 @@
 require('isomorphic-fetch');
 const cheerio = require('cheerio');
 const sqlite3 = require('sqlite3').verbose();
-
-const util = require('util');
+const path = require("path");
 
 const output = 'scripts/test.txt';
 const encoding = 'utf8';
@@ -68,6 +67,14 @@ async function fetchTours(links) {
 
 async function main() {
 	console.log('running scraper');
+	const a = 'foo';
+	console.log(a);
+	
+
+	
+	
+console.log(path.resolve("./"));
+console.log(path.resolve(__dirname));
  	
 	
 	const $ = await fetchBase();
@@ -75,7 +82,7 @@ async function main() {
 	links = getLinks($);
 	const tours = await fetchTours(links);
 	
-	const db = new sqlite3.Database('database/DayTours.db');
+	const db = new sqlite3.Database('src/database/DayTours.db');
 	db.serialize(function() {
 		const stmt = db.prepare('insert into tours (title, price, location, duration, difficulty, description) values (?,?,?,?,?,?)');
 
