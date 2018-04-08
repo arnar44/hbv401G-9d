@@ -30,54 +30,73 @@ function getLinks($) {
 	return links
 }
 
-function maketour($) {
-	
-	const basicInfo = $('#sidebar .sidebar .box');
+function randomLocation() {
+	const locations = ['Reykjavík', 'Akureyri', 'Egilsstaðir'];
+	return locations[Math.floor(Math.random() * locations.length)];
+}
 
- 	basicInfo.each((i, info) => {
-		{
-			// spurning hvort ég scrapi stærri bita og minnka hann her
-		}
-	});
+function maketour($) {
+	const basicInfo = $('#sidebar .sidebar');
+	
+	return {
+		title: $('h1').text().substring(10).trim(),
+		price: $(basicInfo).find('.box.price .boxText').text(),
+		location: randomLocation(),
+		duration: $(basicInfo).find('.box.duration .boxText .duration').text(),
+		difficulty: $(basicInfo).find('.box.duration .boxText .level').text(),
+		departures: $(basicInfo).find('.box.departures .boxText').text().replace(/\s+/g, " ").trim(),
+		description: $('.description').text(),
+	}
 }
 
 async function fetchTours(links) {
 	
 	const tours = [];
 
-	links.forEach(async (url) => {
+	for (const url of links) {
 		const response = await fetch(`${baseurl}${url}`);
 		const html = await response.text();
 		
 		const $ = cheerio.load(html);
 		
-
 		tours.push(maketour($));
+	}
 
-	});
+	return tours;
+	
 }
 
 async function main() {
-	console.log('start');
-
-/* 	
-	const db = new sqlite3.Database('DayTours.db');
-	db.serialize(function() {
-		var stmt = db.prepare('insert into tours (title, location, duration, difficulty, iternirary) values (?,?,?,?,?)');
-		stmt.run('test2', '500', 'test2', 'test2', 'test2', 'test2');
-		db.each("SELECT * FROM tours", function(err, row) {
-			console.log(row);
-	 });
-	});
- */
-	
+	console.log('running scraper');
+ 	
 	
 	const $ = await fetchBase();
 	
 	links = getLinks($);
-	fetchTours(links);
+	const tours = await fetchTours(links);
 	
-	console.log('finito');
+	const db = new sqlite3.Database('database/DayTours.db');
+	db.serialize(function() {
+		const stmt = db.prepare('insert into tours (title, price, location, duration, difficulty, description) values (?,?,?,?,?,?)');
+
+		tours.forEach(dayTour => {
+			const {
+				title,
+				price,
+				duration,
+				difficulty,
+				departures,
+				description
+			} = dayTour;
+
+				stmt.run([title, price, duration, difficulty, departures, description], 
+				function(err, row) {
+					console.error('row already exists');
+				});
+		});
+	});
+	
+	db.close();
 }
 
 main();
