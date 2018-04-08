@@ -1,11 +1,11 @@
 create table tours ( 
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
-    title varchar(64) UNIQUE NOT NULL,
-    price INTEGER NOT NULL,
+    title varchar(224) UNIQUE NOT NULL,
+    price varchar(20) NOT NULL,
     location varchar(64) NOT NULL,
     duration varchar(64) NOT NULL,
     difficulty varchar(64),
-    iternirary test
+    description text
 );
 
 create table reviews(
