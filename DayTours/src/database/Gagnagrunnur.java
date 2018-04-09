@@ -227,7 +227,7 @@ public class Gagnagrunnur {
         return trip;
     }
     
-    public ResultSet getUser() throws SQLException{
+    public ResultSet getTrips() throws SQLException{
         // tengjust og skilum null ef ekki tókst að tengjast
         Connection conn = connect();
         if(conn == null) return null;
