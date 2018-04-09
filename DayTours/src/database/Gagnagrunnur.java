@@ -211,4 +211,33 @@ public class Gagnagrunnur {
         return trip;
     }
     
+    public ResultSet getUser(String username, String password) throws SQLException{
+        // tengjust og skilum null ef ekki tókst að tengjast
+        Connection conn = connect();
+        if(conn == null) return null;
+        
+        String stmt = "SELECT * FROM users WHERE username = ? AND password = ?";
+        PreparedStatement pstmt = conn.prepareStatement(stmt);        
+        
+        pstmt.setString(1, username);
+        pstmt.setString(2, password);
+        
+        ResultSet trip = pstmt.executeQuery();
+        conn.close();
+        return trip;
+    }
+    
+    public ResultSet getTrips() throws SQLException{
+        // tengjust og skilum null ef ekki tókst að tengjast
+        Connection conn = connect();
+        if(conn == null) return null;
+        
+        String stmt = "SELECT * FROM tours";
+        PreparedStatement pstmt = conn.prepareStatement(stmt);
+        
+        ResultSet trips = pstmt.executeQuery();
+        
+        return trips;
+    }
+    
 }

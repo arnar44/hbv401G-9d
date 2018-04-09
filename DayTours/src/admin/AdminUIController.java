@@ -35,12 +35,6 @@ public class AdminUIController implements Initializable {
     @FXML
     private Button jTilBaka;
     
-    @FXML
-    private AnchorPane previous;
-    
-    @FXML
-    private Scene prevScene;
-    
     private String adminNotandi;
     private String adminpsw;
 
@@ -52,10 +46,6 @@ public class AdminUIController implements Initializable {
         
     }
     
-    public void setPrevoius(AnchorPane prev){
-        this.previous = prev;
-    }
-    
     /**
      * Ef ýtt er á "tilBaka" hnapp lokum við adminUI glugganum
      * @param event
@@ -64,8 +54,6 @@ public class AdminUIController implements Initializable {
     public void tilBaka(ActionEvent event) {
         //loka admin glugga
         ((Node)(event.getSource())).getScene().getWindow().hide();
-        // sýna upphafsglugga
-        previous.setVisible(true);
         
     }
     
