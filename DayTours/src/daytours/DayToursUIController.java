@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -67,6 +68,9 @@ public class DayToursUIController implements Initializable {
     private ObservableList<String> tripList = FXCollections.observableArrayList();
     @FXML
     private ListView<String> jTripList;
+    @FXML
+    private TripUIController tripDialogController;
+  
     private ResultSet results;
     private int virkurIndex;
     private Gagnagrunnur gagnagrunnur = new Gagnagrunnur();
@@ -283,5 +287,4 @@ public class DayToursUIController implements Initializable {
             return id;
         }
 }
-
 
