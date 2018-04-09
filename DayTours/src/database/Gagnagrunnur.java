@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import model.Booking;
 import model.Purchaser;
 import model.Review;
-import model.Tour;
+import model.Trip;
 
 /**
  *
@@ -110,7 +110,7 @@ public class Gagnagrunnur {
         return result;
     }
     
-    public Boolean createTrip(Tour tour) throws SQLException{
+    public Boolean createTrip(Trip trip) throws SQLException{
         // tengjust og skilum null ef ekki tókst að tengjast
         Connection conn = connect();
         if(conn == null) return null;
@@ -118,12 +118,12 @@ public class Gagnagrunnur {
         String stmt = "INSERT INTO tours (title, price, location, duration, difficulty, description) VALUES (?,?,?,?,?,?)";
         PreparedStatement pstmt = conn.prepareStatement(stmt);
                 
-        pstmt.setString(1, tour.getTitle());
-        pstmt.setString(2, tour.getPrice());
-        pstmt.setString(3, tour.getLocation());
-        pstmt.setString(4, tour.getDuration());
-        pstmt.setString(5, tour.getDifficulty());
-        pstmt.setString(6, tour.getItinirary());
+        pstmt.setString(1, trip.getTitle());
+        pstmt.setString(2, trip.getPrice());
+        pstmt.setString(3, trip.getLocation());
+        pstmt.setString(4, trip.getDuration());
+        pstmt.setString(5, trip.getDifficulty());
+        pstmt.setString(6, trip.getItinirary());
         
         Boolean result = update(pstmt);
         conn.close();
