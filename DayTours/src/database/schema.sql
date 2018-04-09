@@ -26,3 +26,8 @@ create table bookings(
     tourId references tours(id),
     seats INTEGER
 );
+
+create table users(
+    username varchar(64) PRIMARY KEY,
+    password varchar(64) NOT NULL
+);
