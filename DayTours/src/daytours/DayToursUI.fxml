@@ -29,7 +29,7 @@
             <Image url="@../resources/if_Iceland_flat_92128.png" />
          </image>
       </ImageView>
-      <ListView layoutY="62.0" prefHeight="531.0" prefWidth="265.0" />
+      <ListView fx:id="jTripList" layoutY="62.0" prefHeight="531.0" prefWidth="265.0" />
       <Label fx:id="jSearchParameters" alignment="CENTER" layoutX="284.0" layoutY="29.0" prefHeight="29.0" prefWidth="162.0" text="Leitarvalmöguleikar">
          <font>
             <Font size="17.0" />
