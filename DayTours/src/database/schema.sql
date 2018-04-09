@@ -5,6 +5,7 @@ create table tours (
     location varchar(64) NOT NULL,
     duration varchar(64) NOT NULL,
     difficulty varchar(64),
+    departures varchar(120),
     description text
 );
 

@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -24,25 +25,29 @@ import javafx.scene.control.TextField;
 public class TripUIController implements Initializable {
 
     @FXML
-    private Label title;
+    private Label jtitle;
     @FXML
-    private Label price;
+    private TextArea jdescription;
     @FXML
-    private Label location;
+    private Label jprice;
     @FXML
-    private Label duration;
+    private Label jdifficulty;
     @FXML
-    private Label difficulty;
+    private Label jlocation;
     @FXML
-    private TextArea description;
+    private Label jduration;
     @FXML
-    private TextField purchName;
+    private TextField jpurchName;
     @FXML
-    private TextField purchEmail;
+    private TextField jpurchEmail;
     @FXML
-    private ComboBox<?> purchQuantity;
+    private ComboBox<?> jpurchQuantity;
     @FXML
-    private Button bookButton;
+    private Button jbookButton;
+    @FXML
+    private ListView<?> jreviewList;
+    @FXML
+    private Button jsubmitReview;
 
     /**
      * Initializes the controller class.
@@ -53,7 +58,11 @@ public class TripUIController implements Initializable {
     }    
 
     @FXML
-    private void bookTrip(ActionEvent event) {
+    private void jbookTrip(ActionEvent event) {
+    }
+
+    @FXML
+    private void jnewReview(ActionEvent event) {
     }
     
 }

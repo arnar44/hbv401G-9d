@@ -36,11 +36,14 @@ function randomLocation() {
 
 function maketour($) {
 	const basicInfo = $('#sidebar .sidebar');
+	randomLoc = randomLocation();
+	console.log(randomLoc);
+	
 	
 	return {
 		title: $('h1').text().substring(10).trim(),
 		price: $(basicInfo).find('.box.price .boxText').text(),
-		location: randomLocation(),
+		location: randomLoc,
 		duration: $(basicInfo).find('.box.duration .boxText .duration').text(),
 		difficulty: $(basicInfo).find('.box.duration .boxText .level').text(),
 		departures: $(basicInfo).find('.box.departures .boxText').text().replace(/\s+/g, " ").trim(),
@@ -84,19 +87,20 @@ console.log(path.resolve(__dirname));
 	
 	const db = new sqlite3.Database('src/database/DayTours.db');
 	db.serialize(function() {
-		const stmt = db.prepare('insert into tours (title, price, location, duration, difficulty, description) values (?,?,?,?,?,?)');
+		const stmt = db.prepare('insert into tours (title, price, location, duration, difficulty, departures, description) values (?,?,?,?,?,?,?)');
 
 		tours.forEach(dayTour => {
 			const {
 				title,
 				price,
+				location,
 				duration,
 				difficulty,
 				departures,
 				description
 			} = dayTour;
 
-				stmt.run([title, price, duration, difficulty, departures, description], 
+				stmt.run([title, price, location, duration, difficulty, departures, description], 
 				function(err, row) {
 					console.error('row already exists');
 				});

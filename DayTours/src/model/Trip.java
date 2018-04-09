@@ -1,10 +1,10 @@
 package model;
 
-public class Tour {
+public class Trip {
 	private int id;
 	private String title, location, duration, difficulty, itinirary, price;
 	
-	public Tour(String title, String location, String duration, String difficulty, String itinirary, int id, String price) {
+	public Trip(String title, String location, String duration, String difficulty, String itinirary, int id) {
 		this.id = id;
 		this.location = location;
 		this.duration = duration;
