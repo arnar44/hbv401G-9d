@@ -5,6 +5,7 @@ out/
 /bin
 DayTours/build
 DayTours/dist
+DayTours/nbproject
 
 # misc
 .DS_Store
