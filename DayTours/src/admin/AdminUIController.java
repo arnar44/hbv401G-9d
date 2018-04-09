@@ -11,9 +11,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * FXML Controller class
@@ -33,6 +35,12 @@ public class AdminUIController implements Initializable {
     @FXML
     private Button jTilBaka;
     
+    @FXML
+    private AnchorPane previous;
+    
+    @FXML
+    private Scene prevScene;
+    
     private String adminNotandi;
     private String adminpsw;
 
@@ -44,13 +52,21 @@ public class AdminUIController implements Initializable {
         
     }
     
+    public void setPrevoius(AnchorPane prev){
+        this.previous = prev;
+    }
+    
     /**
      * Ef ýtt er á "tilBaka" hnapp lokum við adminUI glugganum
      * @param event
      * @throws IOException 
      */
     public void tilBaka(ActionEvent event) {
+        //loka admin glugga
         ((Node)(event.getSource())).getScene().getWindow().hide();
+        // sýna upphafsglugga
+        previous.setVisible(true);
+        
     }
     
 }
