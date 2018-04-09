@@ -1,5 +1,5 @@
 # dependency
-scripts/node_modules
+DayTours/scripts/node_modules
 
 out/
 /bin
