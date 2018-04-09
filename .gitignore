@@ -3,11 +3,13 @@
 
 out/
 /bin
-/build
-/dist
+DayTours/build
+DayTours/dist
 
 # misc
-/.DS_Store
+.DS_Store
+.project
+.classpath
 .env.local
 .env.development.local
 .env.test.local
