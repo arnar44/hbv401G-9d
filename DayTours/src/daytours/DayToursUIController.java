@@ -224,6 +224,8 @@ public class DayToursUIController implements Initializable {
         System.out.println(trip.getTitle());
         System.out.println(trip.getId());
         System.out.println(trip.getLocation());
+        
+        tripDialogController.setTrip(trip);
     }
     
     /**
