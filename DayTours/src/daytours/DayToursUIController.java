@@ -218,8 +218,12 @@ public class DayToursUIController implements Initializable {
                 String duration = rs.getString("duration");
                 String difficulty = rs.getString("level");
                 String description = rs.getString("description");
+                String meet = rs.getString("meet");
+                String pickup = rs.getString("pickup");
+                String availability = rs.getString("availability");
+                String category = rs.getString("category");
                 trip = new Trip(title, location, duration, difficulty
-                        , description, id, price);
+                        , description, id, price, meet, pickup, availability, category);
                 break;
             }
         }

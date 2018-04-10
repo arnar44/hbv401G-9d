@@ -59,6 +59,14 @@ public class TripUIController implements Initializable {
     private Label jduration;
     @FXML
     private AnchorPane tripDialog;
+    @FXML
+    private Label jcategory;
+    @FXML
+    private Label jmeet;
+    @FXML
+    private Label jpickup;
+    @FXML
+    private Label javailability;
     
     
 
@@ -129,11 +137,16 @@ public class TripUIController implements Initializable {
     
     public void updateInfo(Trip trip) {
         jtitle.setText(trip.getTitle());
+        jtitle.setWrapText(true);
         jdescription.setText(trip.getItinirary());
         jduration.setText(trip.getDuration());
         jdifficulty.setText(trip.getDifficulty());
         jlocation.setText(trip.getLocation());
         jprice.setText(trip.getPrice());
+        jmeet.setText(trip.getMeet());
+        javailability.setText(trip.getAvailability());
+        jcategory.setText(trip.getCategory());
+        jpickup.setText(trip.getPickup());
     }
 
     @FXML
