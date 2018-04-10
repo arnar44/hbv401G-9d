@@ -30,7 +30,7 @@ public class Gagnagrunnur {
         Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = System.getProperty("user.dir")+"\\src\\database\\DayTours.db";
+            String url = System.getProperty("user.dir")+"/src/database/DayTours.db";
             conn = DriverManager.getConnection("jdbc:sqlite:"+url);
 	}
 	catch( Exception e ){

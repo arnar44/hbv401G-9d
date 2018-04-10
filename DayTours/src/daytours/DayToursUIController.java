@@ -52,6 +52,8 @@ public class DayToursUIController {
     private Button jSearch;
     @FXML
     private Button jShowTrips;
+    @FXML
+    private AdminUIController adminDialogController;
 
         /**
          * Þegar ýtt er á "login" í menubar er kallað á login() sem
@@ -117,21 +119,9 @@ public class DayToursUIController {
                 Logger.getLogger(DayToursUIController.class.getName()).log(Level.SEVERE, null, ex);
                 return;
             } 
-                
-            // Ef notandi fannst birtum við notandasíðu
-            Stage adminStage = new Stage();
-            Parent root = null;
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/admin/AdminUI.fxml"));
-                root = loader.load();
-                AdminUIController adminController = loader.<AdminUIController>getController();
-                Scene scene = new Scene(root);
-                adminStage.setScene(scene);
-                adminStage.show();
-            } catch (IOException ex) {
-                System.out.println("AdminUI.fxml viðmót finnst ekki");
-                Logger.getLogger(DayToursUIController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
+            // EF við komumst hingað var rétt notendanaf & lykilorð slegið inn, birta adminUI   
+            adminDialogController.birtaAdminUI(username.getText());
         });
             
         dialog.show();
