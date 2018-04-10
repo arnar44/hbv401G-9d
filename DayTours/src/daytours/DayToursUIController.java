@@ -73,6 +73,8 @@ public class DayToursUIController implements Initializable {
     private ListView<Ref> jTripList;
     @FXML
     private TripUIController tripDialogController;
+    @FXML
+    private AdminUIController adminDialogController;
   
     private ResultSet results;
     private int virkurIndex;
@@ -168,7 +170,7 @@ public class DayToursUIController implements Initializable {
             } 
             
             // EF við komumst hingað var rétt notendanaf & lykilorð slegið inn, birta adminUI   
-            adminDialogController.birtaAdminUI(username.getText(), gagnagrunnur);
+            adminDialogController.birtaAdminUI(username.getText(), gagnagrunnur, adminDialogController);
         });
             
         dialog.show();
@@ -241,13 +243,11 @@ public class DayToursUIController implements Initializable {
     private ArrayList<Ref> updateList() throws SQLException {
         
         refArray = new ArrayList<Ref>(); 
-        int index = 0;
         ResultSet rs = results;
         while (rs.next()) {
             String title = rs.getString("title");
             int id = rs.getInt("Id");
-            referanceArray(id, title, index);
-            index++;
+            referanceArray(id, title);
         }
         return refArray;
     }
@@ -259,7 +259,7 @@ public class DayToursUIController implements Initializable {
      * @param title
      * @param index 
      */
-    private void referanceArray(int id, String title, int index){
+    private void referanceArray(int id, String title){
           refArray.add(new Ref(id, title));
         }
 }

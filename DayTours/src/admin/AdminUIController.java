@@ -23,6 +23,7 @@ import daytours.DayToursUIController;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
@@ -49,19 +50,23 @@ public class AdminUIController implements Initializable {
     @FXML
     private Button jTilBaka;
     
-    private ObservableList<String> reviewList = FXCollections.observableArrayList();
+    private ObservableList<Ref> reviewList = FXCollections.observableArrayList();
     private String adminNotandi;
     private String adminpsw;
     private Gagnagrunnur db = new Gagnagrunnur();
     @FXML
     private AnchorPane adminDialog;
+    @FXML
     private AddTripUIController addTripDialogController;
     @FXML
-    private ListView<String> jReviewList;
+    private ReviewNanarUIController reviewDialogController;
+    @FXML
+    private ListView<Ref> jReviewList;
+    @FXML
+    private AdminUIController self;
     
     private ResultSet results;
     private int virkurIndex;
-    private int rowcount = 0;
     private ArrayList<Ref> refArray;
     private Review review;
 
@@ -91,8 +96,7 @@ public class AdminUIController implements Initializable {
     @FXML
     public void samþykkjaOll(ActionEvent event) throws SQLException {
         db.confirmAllReviews();
-        updateResults();
-        jReviewList.setItems(updateList());
+        refresh();
     }
     
     /**
@@ -107,8 +111,10 @@ public class AdminUIController implements Initializable {
     /**
      * Birta AdminUI (sjálfan sig) kallað úr DayToursUI ef notandi gat loggað sig inn
      * @param username 
+     * @param gagnagrunnur 
      */
-    public void birtaAdminUI(String username, Gagnagrunnur gagnagrunnur){
+    public void birtaAdminUI(String username, Gagnagrunnur gagnagrunnur, AdminUIController gotSelf){
+        self = gotSelf;
         db = gagnagrunnur;
         upphafsstilla();
         //Sýna AdminUI diolog-ið
@@ -129,18 +135,26 @@ public class AdminUIController implements Initializable {
     
     public void upphafsstilla(){
         try {
-            updateResults();
-            jReviewList.setItems(updateList());
+            refresh();
         } catch (SQLException ex) {
             Logger.getLogger(DayToursUIController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        MultipleSelectionModel<String> lsm = (MultipleSelectionModel<String>) jReviewList.getSelectionModel();
-        lsm.selectedItemProperty().addListener(new ChangeListener<String>() {
+        MultipleSelectionModel<Ref> lsm = (MultipleSelectionModel<Ref>) jReviewList.getSelectionModel();
+        lsm.selectedItemProperty().addListener(new ChangeListener<Ref>() {
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            public void changed(ObservableValue<? extends Ref> observable, Ref oldValue, Ref newValue) {
                 // Indexinn í listanum.             
                 virkurIndex = lsm.getSelectedIndex();
+                System.out.println(virkurIndex);
+                // Skoðum review nánar sem var ýtt á
+                if(virkurIndex >= 0){
+                    try {
+                        reviewDialogController.birtaReview(refArray.get(virkurIndex).getId(), db, self);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(AdminUIController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }            
             }
         });
     }
@@ -158,18 +172,16 @@ public class AdminUIController implements Initializable {
      * @return ObservableList
      * @throws SQLException 
      */
-    private ObservableList<String> updateList() throws SQLException {
-        reviewList.clear();
-        refArray = new ArrayList<>();  
+    private ArrayList<Ref> updateList() throws SQLException {
+        refArray = new ArrayList<Ref>();
         ResultSet rs = results;
         while (rs.next()) {
             String name = rs.getString("name");
             int id = rs.getInt("id");
             String date = rs.getString("date");
-            reviewList.add(name + " - " + date);
-            referanceArray(id, name);
+            referanceArray(id, name + " - " + date);
         }
-        return reviewList;
+        return refArray;
     }
     
         /**
@@ -181,6 +193,23 @@ public class AdminUIController implements Initializable {
       private void referanceArray(int id, String title){
           refArray.add(new Ref(id, title));
      }
+    
+      /**
+       * Refreshar lista
+       * @throws SQLException 
+       */
+    public void refresh() throws SQLException{
+        
+        jReviewList.getItems().clear();
+        jReviewList.getSelectionModel().clearSelection();
+        List<Ref> selectedItemsCopy = new ArrayList<>(jReviewList.getSelectionModel().getSelectedItems());
+        jReviewList.getItems().removeAll(selectedItemsCopy);
+        
+        updateResults();
+        reviewList.addAll(updateList());
+        
+        jReviewList.setItems(reviewList);
+    }
     
 }
 
@@ -197,11 +226,16 @@ public class AdminUIController implements Initializable {
             this.name = title;
         }
         
-        public String getTitle(){
+        public String getName(){
             return name;
         }
         
         public int getId() {
             return id;
+        }
+        
+         @Override
+        public String toString() {
+            return getName();
         }
 }
