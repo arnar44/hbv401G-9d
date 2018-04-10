@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -8,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="daytours.TripUIController">
+<AnchorPane id="AnchorPane" fx:id="tripDialog" prefHeight="600.0" prefWidth="600.0" visible="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="daytours.TripUIController">
    <children>
       <Label fx:id="jtitle" alignment="CENTER" layoutX="179.0" layoutY="30.0" prefHeight="20.0" prefWidth="242.0" text="Titill">
          <font>
@@ -36,37 +35,30 @@
             <Font name="Helvetica" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="313.0" layoutY="423.0" text="Name">
+      <Label layoutX="313.0" layoutY="435.0" text="Name">
          <font>
             <Font name="Helvetica" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="313.0" layoutY="455.0" text="Email">
+      <Label layoutX="313.0" layoutY="467.0" text="Email">
          <font>
             <Font name="Helvetica" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="313.0" layoutY="488.0" text="Quantity">
+      <Label layoutX="313.0" layoutY="500.0" text="Quantity">
          <font>
             <Font name="Helvetica" size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="jpurchName" layoutX="400.0" layoutY="420.0" promptText="John Johnson" />
-      <TextField fx:id="jpurchEmail" layoutX="400.0" layoutY="452.0" promptText="example@example.com" />
-      <ComboBox fx:id="jpurchQuantity" layoutX="400.0" layoutY="485.0" prefHeight="27.0" prefWidth="31.0" promptText="0" />
-      <Button fx:id="jbookButton" layoutX="477.0" layoutY="539.0" mnemonicParsing="false" onAction="#jbookTrip" prefWidth="90.0" text="Book">
+      <TextField fx:id="jpurchName" layoutX="400.0" layoutY="432.0" promptText="John Johnson" />
+      <TextField fx:id="jpurchEmail" layoutX="400.0" layoutY="464.0" promptText="example@example.com" />
+      <ComboBox fx:id="jpurchQuantity" layoutX="400.0" layoutY="497.0" prefHeight="27.0" prefWidth="31.0" promptText="0" />
+      <Button layoutX="477.0" layoutY="539.0" mnemonicParsing="false" onAction="#bookTrip" prefWidth="90.0" text="Book">
          <font>
             <Font name="Hack Bold" size="16.0" />
          </font>
       </Button>
-      <ListView fx:id="jreviewList" layoutX="39.0" layoutY="312.0" prefHeight="200.0" prefWidth="200.0" />
-      <Button fx:id="jsubmitReview" layoutX="40.0" layoutY="526.0" mnemonicParsing="false" onAction="#jnewReview" style="-fx-background-color: white;" text="Add Review" textAlignment="CENTER">
-         <font>
-            <Font name="Helvetica" size="13.0" />
-         </font>
-         <effect>
-            <Blend />
-         </effect>
-      </Button>
+      <ListView layoutX="39.0" layoutY="300.0" prefHeight="200.0" prefWidth="200.0" />
+      <Button layoutX="40.0" layoutY="511.0" mnemonicParsing="false" onAction="#addReview" style="-fx-background-color: white;" text="Add reveiw" />
    </children>
 </AnchorPane>

@@ -236,7 +236,7 @@ public class Gagnagrunnur {
         PreparedStatement pstmt = conn.prepareStatement(stmt);
         
         ResultSet trips = pstmt.executeQuery();
-        conn.close();
+        
         return trips;
     }
     
