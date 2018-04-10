@@ -142,9 +142,7 @@ public class DayToursUIController implements Initializable {
         final Button loginButton = (Button) dialog.getDialogPane().lookupButton(loginButtonType);
         //Fylgjumst með þegar ýtt er á "login" takkann
         loginButton.addEventFilter(ActionEvent.ACTION, ae -> {
-
-        //TODO á að tengjast search klasa sem tengist gagnagrunni
-        Gagnagrunnur gagnagrunnur = new Gagnagrunnur();
+            
         //Sækja hvað var slegið inn
         String inputUser = username.getText();
         String inputPSW = password.getText();
@@ -169,7 +167,7 @@ public class DayToursUIController implements Initializable {
             } 
             
             // EF við komumst hingað var rétt notendanaf & lykilorð slegið inn, birta adminUI   
-            adminDialogController.birtaAdminUI(username.getText());
+            adminDialogController.birtaAdminUI(username.getText(), gagnagrunnur);
         });
             
         dialog.show();
@@ -260,7 +258,7 @@ public class DayToursUIController implements Initializable {
      */
     private void referanceArray(int id, String title, int index){
           refArray[index] = new Ref(id, title);
-        }
+    }
 }
 
     /**
