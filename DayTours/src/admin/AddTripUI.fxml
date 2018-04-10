@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="addTripDialog" prefHeight="793.0" prefWidth="479.0" visible="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="admin.AddTripUIController">
+   <children>
+      <Button fx:id="jTilBaka" layoutX="267.0" layoutY="727.0" mnemonicParsing="false" onAction="#tilBaka" text="Til baka" />
+      <Button layoutX="83.0" layoutY="727.0" mnemonicParsing="false" onAction="#stadfesta" text="Staðfesta" />
+      <Label layoutX="14.0" layoutY="29.0" text="Title" />
+      <TextField layoutX="14.0" layoutY="56.0" prefHeight="39.0" prefWidth="444.0" />
+      <Label layoutX="14.0" layoutY="105.0" text="Price" />
+      <TextField layoutX="14.0" layoutY="132.0" prefHeight="39.0" prefWidth="444.0" />
+      <Label layoutX="15.0" layoutY="183.0" text="Location" />
+      <TextField layoutX="15.0" layoutY="210.0" prefHeight="39.0" prefWidth="444.0" />
+      <Label layoutX="19.0" layoutY="263.0" text="Duration" />
+      <TextField layoutX="19.0" layoutY="291.0" prefHeight="39.0" prefWidth="444.0" />
+      <Label layoutX="17.0" layoutY="338.0" text="Difficulty" />
+      <TextField layoutX="14.0" layoutY="371.0" prefHeight="39.0" prefWidth="444.0" />
+      <Label layoutX="19.0" layoutY="420.0" text="Departures" />
+      <TextField layoutX="19.0" layoutY="447.0" prefHeight="39.0" prefWidth="444.0" />
+      <Label layoutX="19.0" layoutY="497.0" text="Description" />
+      <TextArea layoutX="19.0" layoutY="530.0" prefHeight="158.0" prefWidth="444.0" />
+   </children>
+</AnchorPane>

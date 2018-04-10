@@ -18,7 +18,6 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import database.Gagnagrunnur;
 import javafx.stage.Window;
 
 /**
@@ -26,57 +25,32 @@ import javafx.stage.Window;
  *
  * @author Arnar
  */
-public class AdminUIController implements Initializable {
+public class AddTripUIController implements Initializable {
 
     @FXML
-    private TextField jNotendaNafn;
-    @FXML
-    private Button jBaetaVid;
-    @FXML
-    private ListView<?> jUmsagnir;
-    @FXML
-    private Button jSamþykkjaOll;
-    @FXML
     private Button jTilBaka;
-    
-    private String adminNotandi;
-    private String adminpsw;
-    private Gagnagrunnur db;
     @FXML
-    private AnchorPane adminDialog;
-    @FXML
-    private AddTripUIController addTripDialogController;
+    private AnchorPane addTripDialog;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        db = new Gagnagrunnur();
-    }
-    
-    /**
-     * Ef ýtt er á "tilBaka" hnapp lokum við adminUI glugganum
-     * @param event
-     * @throws IOException 
-     */
+        // TODO
+    }    
+
     @FXML
-    public void tilBaka(ActionEvent event) {
+    private void tilBaka(ActionEvent event) {
         //loka admin glugga
         ((Node)(event.getSource())).getScene().getWindow().hide();
     }
     
-    @FXML
-    public void buaTilFerd(ActionEvent event) {
-        // EF við komumst hingað var rétt notendanaf & lykilorð slegið inn, birta adminUI   
-        addTripDialogController.birtaAddTrip();
-    }
-    
-    public void birtaAdminUI(String username){
+    public void birtaAddTrip(){
         //Sýna AdminUI diolog-ið
         DialogPane p = new DialogPane();
-        adminDialog.setVisible(true);
-        p.setContent(adminDialog);
+        addTripDialog.setVisible(true);
+        p.setContent(addTripDialog);
         Dialog<ButtonType> d = new Dialog();
         d.setDialogPane(p);
         
@@ -84,9 +58,11 @@ public class AdminUIController implements Initializable {
         Window window = d.getDialogPane().getScene().getWindow();
         window.setOnCloseRequest(event -> window.hide());
         
-        jNotendaNafn.setText(username);
-        
         d.showAndWait();
+    }
+    
+    public void stadfesta(){
+        
     }
     
 }
