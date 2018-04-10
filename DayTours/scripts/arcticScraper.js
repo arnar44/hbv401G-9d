@@ -33,6 +33,11 @@ function getCategories($) {
 
 function maketour($, tourCatagory) {
 	const tourTitle = $('section.hero div.orbit div.row div div h1').text();
+
+	if(!tourTitle) {
+		return false;
+	}
+
 	const infoBox = $('div.row div.large-10 div.row div.large-8 div.row.tour__tabs div div.tabs-content div.tabs-panel.is-active div.row.tour__icons');
 
 	const tourDescription = $('div.row div.large-10 div.row div.large-8 div.row div.large-9');
@@ -79,9 +84,6 @@ function maketour($, tourCatagory) {
 		price,
 		description
 	};
-	
-	
-
 }
 
 async function fetchCategoryTours(links) {
@@ -115,7 +117,11 @@ async function makeToursFromCategories(categories) {
 		
 		const $ = cheerio.load(html);
 
-		tours.push(maketour($, element.category))
+		const tour = maketour($, element.category);
+		
+		if (tour) {
+			tours.push(tour);
+		}
 	}
 	return tours;
 	

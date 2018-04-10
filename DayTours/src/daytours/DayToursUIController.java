@@ -67,9 +67,9 @@ public class DayToursUIController implements Initializable {
     private Button jSearch;
     @FXML
     private Button jShowTrips;
-    private ObservableList<String> tripList = FXCollections.observableArrayList();
+    private ObservableList<Ref> tripList = FXCollections.observableArrayList();
     @FXML
-    private ListView<String> jTripList;
+    private ListView<Ref> jTripList;
     @FXML
     private TripUIController tripDialogController;
   
@@ -86,15 +86,16 @@ public class DayToursUIController implements Initializable {
         
         try {
             updateResults();
-            jTripList.setItems(updateList());
+            tripList.addAll(updateList());
+            jTripList.setItems(tripList);
         } catch (SQLException ex) {
             Logger.getLogger(DayToursUIController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        MultipleSelectionModel<String> lsm = (MultipleSelectionModel<String>) jTripList.getSelectionModel();
-        lsm.selectedItemProperty().addListener(new ChangeListener<String>() {
+        MultipleSelectionModel<Ref> lsm = (MultipleSelectionModel<Ref>) jTripList.getSelectionModel();
+        lsm.selectedItemProperty().addListener(new ChangeListener<Ref>() {
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            public void changed(ObservableValue<? extends Ref> observable, Ref oldValue, Ref newValue) {
                 // Indexinn í listanum.             
                 virkurIndex = lsm.getSelectedIndex();
                 System.out.println(refArray.get(virkurIndex).getTitle());
@@ -222,9 +223,8 @@ public class DayToursUIController implements Initializable {
                 break;
             }
         }
-        System.out.println(trip.getTitle());
-        System.out.println(trip.getId());
-        System.out.println(trip.getLocation());
+        
+        tripDialogController.setTrip(trip);
     }
     
     /**
@@ -240,19 +240,18 @@ public class DayToursUIController implements Initializable {
      * @return ObservableList
      * @throws SQLException 
      */
-    private ObservableList<String> updateList() throws SQLException {
-        tripList.clear();
+    private ArrayList<Ref> updateList() throws SQLException {
+        
         refArray = new ArrayList<Ref>(); 
         int index = 0;
         ResultSet rs = results;
         while (rs.next()) {
             String title = rs.getString("title");
             int id = rs.getInt("Id");
-            tripList.add(title);
             referanceArray(id, title, index);
             index++;
         }
-        return tripList;
+        return refArray;
     }
 
     
@@ -286,6 +285,11 @@ public class DayToursUIController implements Initializable {
         
         public int getId() {
             return id;
+        }
+        
+        @Override
+        public String toString() {
+            return getTitle();
         }
 }
 
