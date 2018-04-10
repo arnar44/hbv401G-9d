@@ -18,9 +18,9 @@
       <Label layoutX="32.0" layoutY="141.0" text="Bæta við ferð" />
       <Button fx:id="jBaetaVid" layoutX="33.0" layoutY="168.0" mnemonicParsing="false" onAction="#buaTilFerd" text="Bæta við" />
       <Label layoutX="33.0" layoutY="246.0" text="Umsagnir (Smella til að sjá nánar)" />
-      <ListView fx:id="jUmsagnir" layoutX="29.0" layoutY="281.0" prefHeight="241.0" prefWidth="265.0" />
+      <ListView fx:id="jReviewList" layoutX="29.0" layoutY="281.0" prefHeight="241.0" prefWidth="265.0" />
       <Label layoutX="29.0" layoutY="533.0" text="Samþykkja öll ummæli" />
-      <Button fx:id="jSamþykkjaOll" layoutX="29.0" layoutY="560.0" mnemonicParsing="false" text="Samþykkja öll" />
+      <Button fx:id="jSamþykkjaOll" layoutX="29.0" layoutY="560.0" mnemonicParsing="false" onAction="#samþykkjaOll" text="Samþykkja öll" />
       <Button fx:id="jTilBaka" layoutX="304.0" layoutY="560.0" mnemonicParsing="false" onAction="#tilBaka" text="Til baka" />
       <fx:include fx:id="addTripDialog" source="AddTripUI.fxml" />
    </children>

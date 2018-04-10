@@ -1,5 +1,6 @@
 
 
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -111,75 +112,68 @@ public class DayToursUIController implements Initializable {
 	// Event Listener on MenuItem.onAction
 	@FXML
 	public void login(ActionEvent event) {
-            // Búa til dialog
-            Dialog dialog = new Dialog<>();
-            dialog.setTitle("Innskáning");
-            dialog.setHeaderText("Vinsamlegast skráðu þig inn");
-            
-            // takkar í dialog
-            ButtonType loginButtonType = new ButtonType("Innskrá", ButtonData.OK_DONE);
-            ButtonType tilBakaButtonType = new ButtonType("Til baka", ButtonData.CANCEL_CLOSE);
-            dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, tilBakaButtonType);
-            
-            // Username og psw label og gluggar
-            GridPane grid = new GridPane();
-            grid.setHgap(10);
-            grid.setVgap(10);
-            
-            TextField username = new TextField();
-            username.setPromptText("Notendanafn");
-            PasswordField password = new PasswordField();
-            password.setPromptText("Lykilorð");
+        // Búa til dialog
+        Dialog dialog = new Dialog<>();
+        dialog.setTitle("Innskáning");
+        dialog.setHeaderText("Vinsamlegast skráðu þig inn");
 
-            grid.add(new Label("Notendanafn:"), 0, 0);
-            grid.add(username, 1, 0);
-            grid.add(new Label("Lykilorð:"), 0, 1);
-            grid.add(password, 1, 1);
+        // takkar í dialog
+
+        ButtonType loginButtonType = new ButtonType("Innskrá", ButtonData.OK_DONE);
+        ButtonType tilBakaButtonType = new ButtonType("Til baka", ButtonData.CANCEL_CLOSE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, tilBakaButtonType);
+
+        // Username og psw label og gluggar
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        
+        TextField username = new TextField();
+        username.setPromptText("Notendanafn");
+        PasswordField password = new PasswordField();
+        password.setPromptText("Lykilorð");
+        // útlit dialogs
+        grid.add(new Label("Notendanafn:"), 0, 0);
+        grid.add(username, 1, 0);
+        grid.add(new Label("Lykilorð:"), 0, 1);
+        grid.add(password, 1, 1);
             
-            dialog.getDialogPane().setContent(grid);
+        dialog.getDialogPane().setContent(grid);
             
-            final Button loginButton = (Button) dialog.getDialogPane().lookupButton(loginButtonType);
-            loginButton.addEventFilter(ActionEvent.ACTION, ae -> {
-                /*
-                TODO
-                Kalla á aðferð í search sem ber notendanafn og psw við notendur í gaggnagrunni,
-                sú aðferð mun skila resultset.
-                ef resultset er tómt þá skal birta villuskilaboð í dialog annars opna admin gluggan
-                */
-                
-                //Þegar queries eru tilbúnar
-                /*
-                String inputUser = username.getText();
-                String inputPSW = password.getText();
-                ResultSet user = kallISerachogGagnagrunn(inputUser,inputPSW);
+        final Button loginButton = (Button) dialog.getDialogPane().lookupButton(loginButtonType);
+        //Fylgjumst með þegar ýtt er á "login" takkann
+        loginButton.addEventFilter(ActionEvent.ACTION, ae -> {
+            
+        //Sækja hvað var slegið inn
+        String inputUser = username.getText();
+        String inputPSW = password.getText();
+        ResultSet user;
+            try {
+                // Ath hvort notandi með þetta notendanafn og psw sé til
+                user = gagnagrunnur.getUser(inputUser,inputPSW);
                 // Ef enginn notandi fannst í gagnagrunni
                 if(!user.next()){
                     // Latum notanda fá eftirfarandi skilaboð og hreinsum reiti
                     dialog.setHeaderText("Rangt notendanafn eða lykilorð");
                     username.setText("");
                     password.setText("");
-                    // consumeum-enventinn að ýtt var á login-takkann svo dialogin helst opinn
+                    // consumeum-enventinn að ýtt var á login-takkann svo dialogin haldist opinn
                     ae.consume();
                     return;
                 }
-                */
-                
-                // Ef notandi fannst birtum við notandasíðu
-                Stage adminStage = new Stage();
-                Parent root = null;
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/admin/AdminUI.fxml"));
-                    root = loader.load();
-                    Scene scene = new Scene(root);
-                    adminStage.setScene(scene);
-                    adminStage.show();
-                } catch (IOException ex) {
-                    Logger.getLogger(DayToursUIController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
+            } catch (SQLException ex) {
+                System.out.println("Tenging við gagnagrunn næst ekki");
+                Logger.getLogger(DayToursUIController.class.getName()).log(Level.SEVERE, null, ex);
+                return;
+            } 
             
-            dialog.show();
+            // EF við komumst hingað var rétt notendanaf & lykilorð slegið inn, birta adminUI   
+            adminDialogController.birtaAdminUI(username.getText(), gagnagrunnur);
+        });
+            
+        dialog.show();
 	}
+  
 	// Event Listener on MenuItem.onAction
 	@FXML
 	public void closePlatform(ActionEvent event) {
@@ -296,5 +290,3 @@ public class DayToursUIController implements Initializable {
             return getTitle();
         }
 }
-
-
