@@ -55,6 +55,7 @@ public class AdminUIController implements Initializable {
     private Gagnagrunnur db = new Gagnagrunnur();
     @FXML
     private AnchorPane adminDialog;
+    @FXML
     private AddTripUIController addTripDialogController;
     @FXML
     private ListView<String> jReviewList;

@@ -73,6 +73,8 @@ public class DayToursUIController implements Initializable {
     private ListView<Ref> jTripList;
     @FXML
     private TripUIController tripDialogController;
+    @FXML
+    private AdminUIController adminDialogController;
   
     private ResultSet results;
     private int virkurIndex;
