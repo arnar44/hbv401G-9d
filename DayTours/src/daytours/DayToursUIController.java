@@ -1,5 +1,3 @@
-
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -40,6 +38,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MultipleSelectionModel;
 import database.Gagnagrunnur;
+import java.util.ArrayList;
 import java.util.Map;
 import javafx.collections.FXCollections;
 import javafx.fxml.Initializable;
@@ -66,9 +65,9 @@ public class DayToursUIController implements Initializable {
     private Button jSearch;
     @FXML
     private Button jShowTrips;
-    private ObservableList<String> tripList = FXCollections.observableArrayList();
+    private ObservableList<Ref> tripList = FXCollections.observableArrayList();
     @FXML
-    private ListView<String> jTripList;
+    private ListView<Ref> jTripList;
     @FXML
     private TripUIController tripDialogController;
     @FXML
@@ -78,7 +77,7 @@ public class DayToursUIController implements Initializable {
     private int virkurIndex;
     private Gagnagrunnur gagnagrunnur = new Gagnagrunnur();
     private int rowcount = 0;
-    private Ref []refArray;
+    private ArrayList<Ref> refArray;
     private Trip trip;
     
 
@@ -87,18 +86,19 @@ public class DayToursUIController implements Initializable {
         
         try {
             updateResults();
-            jTripList.setItems(updateList());
+            tripList.addAll(updateList());
+            jTripList.setItems(tripList);
         } catch (SQLException ex) {
             Logger.getLogger(DayToursUIController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        MultipleSelectionModel<String> lsm = (MultipleSelectionModel<String>) jTripList.getSelectionModel();
-        lsm.selectedItemProperty().addListener(new ChangeListener<String>() {
+        MultipleSelectionModel<Ref> lsm = (MultipleSelectionModel<Ref>) jTripList.getSelectionModel();
+        lsm.selectedItemProperty().addListener(new ChangeListener<Ref>() {
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            public void changed(ObservableValue<? extends Ref> observable, Ref oldValue, Ref newValue) {
                 // Indexinn í listanum.             
                 virkurIndex = lsm.getSelectedIndex();
-                System.out.println(refArray[virkurIndex].getTitle());
+                System.out.println(refArray.get(virkurIndex).getTitle());
             }
         });
     }
@@ -171,7 +171,7 @@ public class DayToursUIController implements Initializable {
         });
             
         dialog.show();
-    }
+	}
 	// Event Listener on MenuItem.onAction
 	@FXML
 	public void closePlatform(ActionEvent event) {
@@ -199,26 +199,24 @@ public class DayToursUIController implements Initializable {
     public void showTrips(ActionEvent event) throws SQLException {
         updateResults();
         ResultSet rs = results;
-	int myId = refArray[virkurIndex].getId();
+	int myId = refArray.get(virkurIndex).getId();
         while (rs.next()) {
             int id = rs.getInt("Id");
             System.out.println(id + "eða " + myId);
             if(id == myId){
                 String title = rs.getString("title");
-                String location = rs.getString("location");
+                String location = rs.getString("departures");
                 String price = rs.getString("price");
                 String duration = rs.getString("duration");
-                String difficulty = rs.getString("difficulty");
-                String departures = rs.getString("departures");
+                String difficulty = rs.getString("level");
                 String description = rs.getString("description");
                 trip = new Trip(title, location, duration, difficulty
                         , description, id, price);
                 break;
             }
         }
-        System.out.println(trip.getTitle());
-        System.out.println(trip.getId());
-        System.out.println(trip.getLocation());
+        
+        tripDialogController.setTrip(trip);
     }
     
     /**
@@ -234,19 +232,18 @@ public class DayToursUIController implements Initializable {
      * @return ObservableList
      * @throws SQLException 
      */
-    private ObservableList<String> updateList() throws SQLException {
-        tripList.clear();
-        refArray = new Ref[10]; 
+    private ArrayList<Ref> updateList() throws SQLException {
+        
+        refArray = new ArrayList<Ref>(); 
         int index = 0;
         ResultSet rs = results;
         while (rs.next()) {
             String title = rs.getString("title");
             int id = rs.getInt("Id");
-            tripList.add(title);
             referanceArray(id, title, index);
             index++;
         }
-        return tripList;
+        return refArray;
     }
 
     
@@ -257,8 +254,8 @@ public class DayToursUIController implements Initializable {
      * @param index 
      */
     private void referanceArray(int id, String title, int index){
-          refArray[index] = new Ref(id, title);
-    }
+          refArray.add(new Ref(id, title));
+        }
 }
 
     /**
@@ -281,5 +278,9 @@ public class DayToursUIController implements Initializable {
         public int getId() {
             return id;
         }
+        
+        @Override
+        public String toString() {
+            return getTitle();
+        }
 }
-
