@@ -8,6 +8,8 @@ public class RunScript {
 	   ProcessBuilder pb = new ProcessBuilder("scripts/test.sh", "");
 	   pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
 	   pb.redirectError(ProcessBuilder.Redirect.INHERIT);
-	   pb.start();
+           Process process = pb.start();
+           process.waitFor();
+           System.out.println(process.isAlive());
   }
 }

@@ -1,11 +1,14 @@
 create table tours ( 
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
-    title varchar(224) UNIQUE NOT NULL,
+    title varchar(224) NOT NULL,
     price varchar(20) NOT NULL,
-    location varchar(64) NOT NULL,
+    category varchar(64) NOT NULL,
     duration varchar(64) NOT NULL,
-    difficulty varchar(64),
+    level varchar(64),
     departures varchar(120),
+    meet varchar(4),
+    pickup varchar(5),
+    availability varchar(64),
     description text
 );
 

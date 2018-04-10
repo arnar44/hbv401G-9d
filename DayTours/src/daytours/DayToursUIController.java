@@ -39,6 +39,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MultipleSelectionModel;
 import database.Gagnagrunnur;
+import java.util.ArrayList;
 import java.util.Map;
 import javafx.collections.FXCollections;
 import javafx.fxml.Initializable;
@@ -75,7 +76,7 @@ public class DayToursUIController implements Initializable {
     private int virkurIndex;
     private Gagnagrunnur gagnagrunnur = new Gagnagrunnur();
     private int rowcount = 0;
-    private Ref []refArray;
+    private ArrayList<Ref> refArray;
     private Trip trip;
     
 
@@ -95,7 +96,7 @@ public class DayToursUIController implements Initializable {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 // Indexinn í listanum.             
                 virkurIndex = lsm.getSelectedIndex();
-                System.out.println(refArray[virkurIndex].getTitle());
+                System.out.println(refArray.get(virkurIndex).getTitle());
             }
         });
     }
@@ -204,17 +205,16 @@ public class DayToursUIController implements Initializable {
     public void showTrips(ActionEvent event) throws SQLException {
         updateResults();
         ResultSet rs = results;
-	int myId = refArray[virkurIndex].getId();
+	int myId = refArray.get(virkurIndex).getId();
         while (rs.next()) {
             int id = rs.getInt("Id");
             System.out.println(id + "eða " + myId);
             if(id == myId){
                 String title = rs.getString("title");
-                String location = rs.getString("location");
+                String location = rs.getString("departures");
                 String price = rs.getString("price");
                 String duration = rs.getString("duration");
-                String difficulty = rs.getString("difficulty");
-                String departures = rs.getString("departures");
+                String difficulty = rs.getString("level");
                 String description = rs.getString("description");
                 trip = new Trip(title, location, duration, difficulty
                         , description, id, price);
@@ -241,7 +241,7 @@ public class DayToursUIController implements Initializable {
      */
     private ObservableList<String> updateList() throws SQLException {
         tripList.clear();
-        refArray = new Ref[10]; 
+        refArray = new ArrayList<Ref>(); 
         int index = 0;
         ResultSet rs = results;
         while (rs.next()) {
@@ -262,7 +262,7 @@ public class DayToursUIController implements Initializable {
      * @param index 
      */
     private void referanceArray(int id, String title, int index){
-          refArray[index] = new Ref(id, title);
+          refArray.add(new Ref(id, title));
         }
 }
 
