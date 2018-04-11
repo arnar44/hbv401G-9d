@@ -7,21 +7,21 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="adminDialog" minHeight="-Infinity" minWidth="-Infinity" prefHeight="565.0" prefWidth="352.0" visible="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="admin.AdminUIController">
+<AnchorPane fx:id="adminDialog" minHeight="-Infinity" minWidth="-Infinity" prefHeight="502.0" prefWidth="340.0" visible="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="admin.AdminUIController">
    <children>
-      <Label alignment="CENTER" layoutX="16.0" layoutY="23.0" prefHeight="29.0" prefWidth="82.0" text="Username">
+      <Label alignment="CENTER" layoutX="16.0" prefHeight="29.0" prefWidth="82.0" text="Username">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <TextField fx:id="jNotendaNafn" editable="false" layoutX="16.0" layoutY="52.0" />
-      <Label layoutX="16.0" layoutY="102.0" text="Make tour" />
-      <Button fx:id="jBaetaVid" layoutX="14.0" layoutY="129.0" mnemonicParsing="false" onAction="#buaTilFerd" text="Make Tour" />
-      <Label layoutX="16.0" layoutY="187.0" text="Pending reviews (double click to review)" />
-      <ListView fx:id="jReviewList" layoutX="16.0" layoutY="214.0" prefHeight="241.0" prefWidth="265.0" />
-      <Label layoutX="16.0" layoutY="474.0" text="Accept all reviews" />
-      <Button fx:id="jSamþykkjaOll" layoutX="14.0" layoutY="507.0" mnemonicParsing="false" onAction="#samþykkjaOll" text="Accept all" />
-      <Button fx:id="jTilBaka" layoutX="273.0" layoutY="507.0" mnemonicParsing="false" onAction="#tilBaka" text="Back" />
+      <TextField fx:id="jNotendaNafn" disable="true" editable="false" layoutX="16.0" layoutY="29.0" pickOnBounds="false" />
+      <Label layoutX="16.0" layoutY="75.0" text="Make tour" />
+      <Button fx:id="jBaetaVid" layoutX="16.0" layoutY="102.0" mnemonicParsing="false" onAction="#buaTilFerd" text="Make Tour" />
+      <Label layoutX="17.0" layoutY="148.0" text="Pending reviews (double click to review)" />
+      <ListView fx:id="jReviewList" layoutX="17.0" layoutY="175.0" prefHeight="241.0" prefWidth="265.0" />
+      <Label layoutX="16.0" layoutY="426.0" text="Accept all reviews" />
+      <Button fx:id="jSamþykkjaOll" layoutX="14.0" layoutY="453.0" mnemonicParsing="false" onAction="#samþykkjaOll" text="Accept all" />
+      <Button fx:id="jTilBaka" layoutX="252.0" layoutY="453.0" mnemonicParsing="false" onAction="#tilBaka" text="Back" />
       <fx:include fx:id="addTripDialog" source="AddTripUI.fxml" />
    </children>
 </AnchorPane>

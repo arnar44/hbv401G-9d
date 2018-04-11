@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -150,7 +152,6 @@ public class AddTripUIController implements Initializable {
         jPriceSlider.setShowTickLabels(true);
         jPriceSlider.setShowTickMarks(true);
         jPriceSlider.setMajorTickUnit(25000);
-        jPriceSlider.setMinorTickCount(1);
         jPriceSlider.setBlockIncrement(1000);
         
         //Upphafsstilla duration slider
@@ -162,9 +163,7 @@ public class AddTripUIController implements Initializable {
         jDurationSlider.setMajorTickUnit(6);
         jDurationSlider.setMinorTickCount(1);
         
-        //Label fyrir slider-a
-        priceChange();
-        durationChange();
+
 
         // Upphafsstilla category
         categoryBox();
@@ -190,22 +189,54 @@ public class AddTripUIController implements Initializable {
                         Logger.getLogger(AddTripUIController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+                // Ef ýtt er á confirm og validate skilar false, litast gluggar rauðir
+                // sem ekki var fyllt inní rétt og event er consumaður (ekkert gerist)
                 event.consume();
             }
         };
         
+        // Setja handler fyrir takkan
         jConfirm.setOnAction(confirmHandler);
+        
+        // Event listener fyrir Price sliderinn
+        jPriceSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable,
+                Number oldValue, Number newValue) {
+                //Sækja nýju tölu
+                int sliderValue = newValue.intValue();
+                //Námundum að næsta 1000
+                int rounded = (sliderValue + 500) / 1000 * 1000;
+                //Setjum í label
+                jPrice.setText(String.valueOf(rounded));
+            }
+        });
+        // Event listener fyrir Duration sliderinn
+        jDurationSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable,
+                Number oldValue, Number newValue) {
+                //Sækja nýja tölu
+                int sliderValue = newValue.intValue();
+                // Setja í label
+                jDuration.setText(String.valueOf(sliderValue));
+            }
+        });
+        
     }
     /**
      * Initialize choicebox fyrir categories
      * @throws SQLException 
      */
     private void categoryBox() throws SQLException{
+        // Sækjum alla flokka sem eru núþegar í boði
         ResultSet set = db.getCategories();
         ObservableList<String> list = FXCollections.observableArrayList();
+        // Setja í lista
         while(set.next()){
             list.add(set.getString("category"));
         }
+        // Setjum listan inn í choice-boxið
         jCategory.setItems(list);
     }
     
@@ -214,42 +245,29 @@ public class AddTripUIController implements Initializable {
      * @throws SQLException 
      */
     private void levelBox() throws SQLException{
+        // Sækja öll erfiðleikastig sem eru núþegar í boði
         ResultSet set = db.getLevels();
         ObservableList<String> list = FXCollections.observableArrayList();
+        // Setja þau í lista
         while(set.next()){
             list.add(set.getString("level"));
         }
+        // Setjum listan inn í choice-boxið
         jLevel.setItems(list);
     }
     
     /**
-     * Initialize choicebox fyrir tima, frá - til
+     * Initialize choicebox fyrir tima, frá og til
      * @throws SQLException 
      */
     private void timeBox() throws SQLException{
+        // Listi af öllum mánuðum
         ObservableList<String> list = FXCollections.observableArrayList(
             "January", "February", "March", "April", "Mai", "June",
             "July", "August", "September", "Ocktober", "November", "December");
+        // Setjum listan inn í bæði choice-boxin
         jFrom.setItems(list);
         jTo.setItems(list);
-    }
-    
-    /**
-     * Höndlar event þegar price slider er breytt
-     */
-    @FXML
-    public void priceChange(){
-        int sliderValue = (int)Math.round(jPriceSlider.getValue());
-        jPrice.setText(String.valueOf(sliderValue));
-    }
-    
-       /**
-     * Höndlar event þegar duration slider er breytt
-     */
-    @FXML
-    public void durationChange(){
-        int sliderValue = (int)Math.round(jDurationSlider.getValue());
-        jDuration.setText(String.valueOf(sliderValue));
     }
     
     /**
@@ -257,16 +275,18 @@ public class AddTripUIController implements Initializable {
      */
     @FXML
     public void timeChange(){
+        // Ef jHours takkin er valinn setjum við label jTimeStamp sem Hours (annars Days)
        String display = jHours.isSelected() ? "Hours" : "Days";
        jTimeStamp.setText(display);
     }
     
     /**
-     * Fall sem bregst við breytingu í hceckboxi
+     * Fall sem bregst við breytingu í ceckboxi
      */
     @FXML
     public void availabiltyChange(){
-        Boolean visible = jAllYear.isSelected();
+       // Ef tikkað er í jAllYear checkboxið disable-um við jFrom og jTo annars ekki 
+       Boolean visible = jAllYear.isSelected();
        
        jFromLabel.disableProperty().set(visible);
        jToLabel.disableProperty().set(visible);
@@ -276,21 +296,27 @@ public class AddTripUIController implements Initializable {
     
     /**
      * Skoðar Title, Description og departures textfieldin, ef þau eru tóm
-     * eru þau lituð rauð annars default litur, ef eitthvað þeirra er tómt er 
+     * eru þau lituð rauð annars default litur. Ef eitthvað þeirra er tómt er 
      * false skilað, annars true
+     * Skoðar einnig hvort eitthvað var valið í choiceBoxin jLevel og jCategory
      * @return 
      */
     private Boolean validate() {
+        // Ef reitur er tómur setjum við þetta sem background-color
         String error = "-fx-control-inner-background: rgba(240, 0, 0, 0.3)";
+        // Ef choicebox er tómur setjum við þennan rauða lit sem border-lit
         String borderError = "-fx-border-color: rgba(255, 0, 0, 1)";
         String color;
         
+        //Sækjum hvort reitir og choicebox séu tóm
         Boolean title = jTitle.getText().trim().isEmpty();
         Boolean description = jDescription.getText().trim().isEmpty();
         Boolean departures = jDepartures.getText().trim().isEmpty();
         Boolean level = jLevel.getSelectionModel().getSelectedItem() == null;
         Boolean category = jCategory.getSelectionModel().getSelectedItem() == null;
         
+        // Setjum lit á reiti og choicebox eftir því hvort þau voru tóm eða ekki
+        // error error/borderError ef þeir voru tómir annars null sem setur default lit
         color = title ? error : null;
         jTitle.setStyle(color);
         color = description ? error : null;
@@ -302,6 +328,7 @@ public class AddTripUIController implements Initializable {
         color = category ? borderError : null;
         jCategory.setStyle(color);       
         
+        // Skilar boolean, true ef allir reitir voru ekki tómir (í lagi)
         return !title && !description && !departures && !level && !category;
     }
     
@@ -313,7 +340,7 @@ public class AddTripUIController implements Initializable {
     }
     
     /**
-     * Sækir info í dialog og býr til Trip hlut
+     * Sækir info í dialog og býr til Trip hlut og skilar
      * @return 
      */
     private Trip setTrip(){
