@@ -32,13 +32,13 @@
       </Label>
       <TextField fx:id="jpurchName" layoutX="397.0" layoutY="526.0" promptText="John Johnson" />
       <TextField fx:id="jpurchEmail" layoutX="397.0" layoutY="558.0" promptText="example@example.com" />
-      <ComboBox fx:id="jpurchQuantity" layoutX="397.0" layoutY="591.0" prefHeight="27.0" prefWidth="31.0" promptText="0" />
+      <ChoiceBox fx:id="jpurchQuantity" layoutX="397.0" layoutY="591.0" prefHeight="27.0" prefWidth="31.0" />
       <Button layoutX="474.0" layoutY="633.0" mnemonicParsing="false" onAction="#bookTrip" prefWidth="90.0" text="Book">
          <font>
             <Font name="Hack Bold" size="16.0" />
          </font>
       </Button>
-      <ListView layoutX="36.0" layoutY="394.0" prefHeight="200.0" prefWidth="200.0" />
+      <ListView fx:id="jreviewList" layoutX="36.0" layoutY="394.0" prefHeight="200.0" prefWidth="200.0" />
       <Button layoutX="37.0" layoutY="605.0" mnemonicParsing="false" onAction="#addReview" style="-fx-background-color: white;" text="Add reveiw" />
       <VBox layoutX="210.0" layoutY="80.0" prefHeight="156.0">
          <children>

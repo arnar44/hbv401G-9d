@@ -208,7 +208,6 @@ public class DayToursUIController implements Initializable {
 	int myId = refArray.get(virkurIndex).getId();
         while (rs.next()) {
             int id = rs.getInt("Id");
-            System.out.println(id + "eða " + myId);
             if(id == myId){
                 String title = rs.getString("title");
                 String location = rs.getString("departures");
