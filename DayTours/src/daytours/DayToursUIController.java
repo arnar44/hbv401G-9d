@@ -170,7 +170,7 @@ public class DayToursUIController implements Initializable {
             } 
             
             // EF við komumst hingað var rétt notendanaf & lykilorð slegið inn, birta adminUI   
-            adminDialogController.birtaAdminUI(username.getText(), gagnagrunnur, adminDialogController);
+            adminDialogController.birtaAdminUI(username.getText(), gagnagrunnur);
         });
             
         dialog.show();

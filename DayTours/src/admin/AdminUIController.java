@@ -30,7 +30,11 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.Label;
 import javafx.scene.control.MultipleSelectionModel;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Window;
 import model.Review;
 
@@ -59,11 +63,8 @@ public class AdminUIController implements Initializable {
     @FXML
     private AddTripUIController addTripDialogController;
     @FXML
-    private ReviewNanarUIController reviewDialogController;
-    @FXML
     private ListView<Ref> jReviewList;
     @FXML
-    private AdminUIController self;
     
     private ResultSet results;
     private int virkurIndex;
@@ -113,8 +114,7 @@ public class AdminUIController implements Initializable {
      * @param username 
      * @param gagnagrunnur 
      */
-    public void birtaAdminUI(String username, Gagnagrunnur gagnagrunnur, AdminUIController gotSelf){
-        self = gotSelf;
+    public void birtaAdminUI(String username, Gagnagrunnur gagnagrunnur){
         db = gagnagrunnur;
         upphafsstilla();
         //Sýna AdminUI diolog-ið
@@ -149,14 +149,101 @@ public class AdminUIController implements Initializable {
                 System.out.println(virkurIndex);
                 // Skoðum review nánar sem var ýtt á
                 if(virkurIndex >= 0){
+                  
                     try {
-                        reviewDialogController.birtaReview(refArray.get(virkurIndex).getId(), db, self);
+                        makeDialog();
+                        //reviewDialogController.birtaReview(refArray.get(virkurIndex).getId(), db, self);
                     } catch (SQLException ex) {
                         Logger.getLogger(AdminUIController.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                  
                 }            
             }
         });
+    }
+    
+    private void makeDialog() throws SQLException{
+        ResultSet result = db.getAdminReview(refArray.get(virkurIndex).getId());
+        if(!result.next()){
+            //TODO villa kom upp, review finnst ekki
+        }
+        
+        // Búa til dialog
+        Dialog dialog = new Dialog<>();
+        dialog.setTitle("Review");
+        dialog.setHeaderText("Review details");
+
+        // takkar í dialog
+        ButtonType acceptButtonType = new ButtonType("Accept", ButtonBar.ButtonData.OK_DONE);
+        ButtonType declineButtonType = new ButtonType("Decline", ButtonBar.ButtonData.OK_DONE);
+        ButtonType backButtonType = new ButtonType("Back", ButtonBar.ButtonData.CANCEL_CLOSE);
+        dialog.getDialogPane().getButtonTypes().addAll(acceptButtonType, declineButtonType, backButtonType);
+        
+        // Búa til útlit og hluti í útliti
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        
+        TextField tripId = new TextField();
+        tripId.setText(result.getString("tourId"));
+        TextField name = new TextField();
+        name.setText(result.getString("name"));
+        TextField email = new TextField();
+        email.setText(result.getString("email"));
+        TextField date = new TextField();
+        date.setText(result.getString("date"));
+        TextArea review = new TextArea();
+        review.setText(result.getString("review"));
+        
+        tripId.setEditable(false);
+        name.setEditable(false);
+        email.setEditable(false);
+        date.setEditable(false);
+        review.setEditable(false);
+        
+        review.setPrefColumnCount(20);
+        review.setPrefRowCount(6);
+        
+        // útlit dialogs
+        grid.add(new Label("Tour ID"), 0, 0);
+        grid.add(tripId, 2, 0);
+        grid.add(new Label("Name"), 0, 1);
+        grid.add(name, 2, 1);
+        grid.add(new Label("Email"), 0, 2);
+        grid.add(email, 2, 2);
+        grid.add(new Label("Date"), 0, 3);
+        grid.add(date, 2, 3);
+        grid.add(new Label("Review"), 0,4);
+        grid.add(review, 2, 5);
+        
+        //setja grid i dialog
+        dialog.getDialogPane().setContent(grid);
+        
+        //Handlerar fyrir takka
+        final Button acceptButton = (Button) dialog.getDialogPane().lookupButton(acceptButtonType);
+        final Button declineButton = (Button) dialog.getDialogPane().lookupButton(declineButtonType);
+        
+        acceptButton.addEventFilter(ActionEvent.ACTION, ae -> { 
+            try {
+                //samþykkja review
+                db.confirmReview(refArray.get(virkurIndex).getId());
+                //Erum búin að samþykkja eitt review, það dettur þá úr lista á parent (AdminUI)
+                refresh();
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminUIController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        declineButton.addEventFilter(ActionEvent.ACTION, ae -> { 
+            try {
+                db.deleteReview(refArray.get(virkurIndex).getId());
+                //Erum búin að samþykkja eitt review, það dettur þá úr lista á parent (AdminUI)
+                refresh();
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminUIController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        
+        dialog.show();
     }
     
     /**
@@ -166,6 +253,7 @@ public class AdminUIController implements Initializable {
     private void updateResults() throws SQLException {
         results = db.getAdminReviews();
     }
+    
     
     /**
      * Uppfærir lista með öllum titles úr ResultSet
