@@ -44,7 +44,9 @@ import database.Gagnagrunnur;
 import java.util.ArrayList;
 import java.util.Map;
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
+import javafx.stage.WindowEvent;
 import model.Trip;
 
 public class DayToursUIController implements Initializable {
@@ -88,9 +90,7 @@ public class DayToursUIController implements Initializable {
     public void initialize(URL url, ResourceBundle rb){ 
         
         try {
-            updateResults();
-            tripList.addAll(updateList());
-            jTripList.setItems(tripList);
+            refreshList();
         } catch (SQLException ex) {
             Logger.getLogger(DayToursUIController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -101,19 +101,19 @@ public class DayToursUIController implements Initializable {
             public void changed(ObservableValue<? extends Ref> observable, Ref oldValue, Ref newValue) {
                 // Indexinn í listanum.             
                 virkurIndex = lsm.getSelectedIndex();
-                System.out.println(refArray.get(virkurIndex).getTitle());
+                System.out.println(virkurIndex);
             }
         });
     }
     
-        /**
-         * Þegar ýtt er á "login" í menubar er kallað á login() sem
-         * Býr til innskáningar-dialog
-         * @param event 
-         */
-	// Event Listener on MenuItem.onAction
-	@FXML
-	public void login(ActionEvent event) {
+    /**
+      * Þegar ýtt er á "login" í menubar er kallað á login() sem
+      * Býr til innskáningar-dialog
+      * @param event 
+    */
+    // Event Listener on MenuItem.onAction
+    @FXML
+    public void login(ActionEvent event) {
         
         // Búa til dialog
         Dialog dialog = new Dialog<>();
@@ -173,10 +173,16 @@ public class DayToursUIController implements Initializable {
             */
             // EF við komumst hingað var rétt notendanaf & lykilorð slegið inn, birta adminUI   
             adminDialogController.birtaAdminUI(username.getText(), gagnagrunnur);
+            try {
+                //Refreshum þegar adminDialogUI er lokað þá getur verið að ferð hafi bæst við
+                refreshList();
+            } catch (SQLException ex) {
+                Logger.getLogger(DayToursUIController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
             
         dialog.show();
-	}
+    }
   
 	// Event Listener on MenuItem.onAction
 	@FXML
@@ -262,8 +268,19 @@ public class DayToursUIController implements Initializable {
      * @param index 
      */
     private void referanceArray(int id, String title){
-          refArray.add(new Ref(id, title));
-        }
+        refArray.add(new Ref(id, title));
+    }
+    
+    /**
+     * Refresh lista þegar gluggi er opnaður og þegar nýrri ferð
+     * er bætt við í AddTripUI
+     */
+    public void refreshList() throws SQLException{
+        updateResults();
+        tripList.clear();
+        tripList.addAll(updateList());
+        jTripList.setItems(tripList); 
+    }
 }
 
     /**
