@@ -1,7 +1,7 @@
 create table tours ( 
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
     title varchar(224) NOT NULL,
-    price varchar(20) NOT NULL,
+    price INTEGER NOT NULL,
     category varchar(64) NOT NULL,
     duration varchar(64) NOT NULL,
     level varchar(64),
