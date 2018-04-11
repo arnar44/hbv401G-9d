@@ -101,7 +101,6 @@ public class DayToursUIController implements Initializable {
             public void changed(ObservableValue<? extends Ref> observable, Ref oldValue, Ref newValue) {
                 // Indexinn í listanum.             
                 virkurIndex = lsm.getSelectedIndex();
-                System.out.println(refArray.get(virkurIndex).getTitle());
             }
         });
     }

@@ -27,7 +27,8 @@ create table bookings(
     Purchaser_name varchar(64),
     Purchaser_email varchar(84),
     tourId references tours(id),
-    seats INTEGER
+    seats INTEGER,
+    dateTime date
 );
 
 create table users(

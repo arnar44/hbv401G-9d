@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import model.Booking;
 import model.Purchaser;
 import model.Review;
@@ -99,12 +100,12 @@ public class Gagnagrunnur {
         return result;
     }
     
-    public Boolean updateBooking(int id, Booking booking) throws SQLException{
+    public Boolean updateBooking(int id, Booking booking, LocalDate date) throws SQLException{
         // tengjust og skilum null ef ekki tókst að tengjast
         conn = connect();
         if(conn == null) return null;
         
-        String stmt = "INSERT INTO bookings (Purchaser_name, Purchaser_email, tourId, seats) VALUES (?,?,?,?)";
+        String stmt = "INSERT INTO bookings (Purchaser_name, Purchaser_email, tourId, seats, dateTime) VALUES (?,?,?,?,?)";
         PreparedStatement pstmt = conn.prepareStatement(stmt);
         
         Purchaser purchaser = booking.getClient();
@@ -113,9 +114,9 @@ public class Gagnagrunnur {
         pstmt.setString(2, purchaser.getEmail());
         pstmt.setInt(3, id);
         pstmt.setInt(4, purchaser.getSeatQt());
+        pstmt.setString(5, date.toString());
         
         Boolean result = update(pstmt);
-        System.out.println(result);
         // skila true ef það tókst að setja inn review, annars false
         return result;
     }

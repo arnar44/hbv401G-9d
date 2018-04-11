@@ -1,12 +1,16 @@
 package model;
 
+import java.time.LocalDate;
+
 public class Booking {
-	private int id;
-	private Purchaser client;
+	private final int id;
+	private final Purchaser client;
+        private final LocalDate date;
 	
-	public Booking(int id, Purchaser client) {
+	public Booking(int id, Purchaser client, LocalDate date) {
 		this.id = id;
 		this.client = client;
+                this.date = date;
 	}
 	
 	public int getId() {

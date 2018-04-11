@@ -15,24 +15,24 @@
          </font>
       </Label>
       <TextArea fx:id="jdescription" editable="false" layoutX="37.0" layoutY="253.0" prefHeight="100.0" prefWidth="491.0" wrapText="true" />
-      <Label layoutX="310.0" layoutY="529.0" text="Name">
+      <Label layoutX="318.0" layoutY="562.0" text="Name">
          <font>
             <Font name="Helvetica" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="310.0" layoutY="561.0" text="Email">
+      <Label layoutX="318.0" layoutY="594.0" text="Email">
          <font>
             <Font name="Helvetica" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="310.0" layoutY="594.0" text="Quantity">
+      <Label layoutX="318.0" layoutY="627.0" text="Quantity">
          <font>
             <Font name="Helvetica" size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="jpurchName" layoutX="397.0" layoutY="526.0" promptText="John Johnson" />
-      <TextField fx:id="jpurchEmail" layoutX="397.0" layoutY="558.0" promptText="example@example.com" />
-      <ChoiceBox fx:id="jpurchQuantity" layoutX="397.0" layoutY="591.0" prefHeight="27.0" prefWidth="31.0" />
+      <TextField fx:id="jpurchName" layoutX="405.0" layoutY="559.0" promptText="John Johnson" />
+      <TextField fx:id="jpurchEmail" layoutX="405.0" layoutY="591.0" promptText="example@example.com" />
+      <ChoiceBox fx:id="jpurchQuantity" layoutX="405.0" layoutY="624.0" prefHeight="27.0" prefWidth="31.0" />
       <Button layoutX="474.0" layoutY="633.0" mnemonicParsing="false" onAction="#bookTrip" prefWidth="90.0" text="Book">
          <font>
             <Font name="Hack Bold" size="16.0" />
@@ -84,5 +84,6 @@
             </Label>
          </children>
       </VBox>
+      <DatePicker fx:id="jpurchDate" layoutX="405.0" layoutY="518.0" prefHeight="27.0" prefWidth="167.0" />
    </children>
 </AnchorPane>

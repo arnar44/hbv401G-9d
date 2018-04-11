@@ -10,5 +10,14 @@
             <file>file:/C:/Users/Arnar/Desktop/Skóldót/4.%20Misseri/Þróun%20hugbúnaðar/hop-9d/DayTours/src/daytours/DayTours.java</file>
             <file>file:/C:/Users/Arnar/Desktop/Skóldót/4.%20Misseri/Þróun%20hugbúnaðar/hop-9d/DayTours/src/database/schema.sql</file>
         </group>
+        <group name="Viðmótsforritun_Ken">
+            <file>file:/Users/freyrdanielsson/eclipse-workspace/hbv401G-9d/DayTours/src/daytours/TripUIController.java</file>
+            <file>file:/Users/freyrdanielsson/eclipse-workspace/hbv401G-9d/DayTours/src/admin/AddTripUIController.java</file>
+            <file>file:/Users/freyrdanielsson/eclipse-workspace/hbv401G-9d/DayTours/src/database/Gagnagrunnur.java</file>
+            <file>file:/Users/freyrdanielsson/eclipse-workspace/hbv401G-9d/DayTours/src/admin/AdminUIController.java</file>
+            <file>file:/Users/freyrdanielsson/eclipse-workspace/hbv401G-9d/DayTours/src/model/Trip.java</file>
+            <file>file:/Users/freyrdanielsson/eclipse-workspace/hbv401G-9d/DayTours/src/utils/Book.java</file>
+            <file>file:/Users/freyrdanielsson/eclipse-workspace/hbv401G-9d/DayTours/src/daytours/DayToursUIController.java</file>
+        </group>
     </open-files>
 </project-private>
