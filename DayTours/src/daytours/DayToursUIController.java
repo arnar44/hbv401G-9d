@@ -50,18 +50,26 @@ import model.Trip;
 
 public class DayToursUIController implements Initializable {
     @FXML
+    private Label jDaytours;
+    @FXML
     private AnchorPane mainMenu;
     @FXML
-    private ComboBox<String> jPrice;
+    private Label jSearchParameters;
     @FXML
-    private ComboBox<String> jLocation;
+    private Label jPrice;
     @FXML
-    private ComboBox<String> jCategory;
+    private Label jLocation;
     @FXML
-    private CheckBox jPickup;
+    private ComboBox<?> jCategory;
+    @FXML
+    private CheckBox jOffers;
+    @FXML
+    private CheckBox jPopular;
+    @FXML
+    private Button jSearch;
+    @FXML
+    private Button jShowTrips;
     private ObservableList<Ref> tripList = FXCollections.observableArrayList();
-    private ObservableList<String> priceList = FXCollections.observableArrayList();
-    private ObservableList<String> locationList = FXCollections.observableArrayList();
     @FXML
     private ListView<Ref> jTripList;
     @FXML

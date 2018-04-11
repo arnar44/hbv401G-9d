@@ -46,8 +46,6 @@ import model.Trip;
 public class AddTripUIController implements Initializable {
 
     @FXML
-    private Button jTilBaka;
-    @FXML
     private Button jConfirm;
     @FXML
     private AnchorPane addTripDialog;
@@ -78,13 +76,9 @@ public class AddTripUIController implements Initializable {
     @FXML
     private Label jToLabel;
     @FXML
-    private RadioButton jDays;
-    @FXML
     private RadioButton jMeet;
     @FXML
     private RadioButton jPickup;
-    @FXML
-    private ToggleGroup timeStampGroup;
     @FXML
     private RadioButton jHours;
     @FXML
@@ -102,12 +96,21 @@ public class AddTripUIController implements Initializable {
         // TODO
     }    
 
+    /**
+     * Þegar ýtt er á "back" takkan er þessum glugga lokað.
+     * @param event 
+     */
     @FXML
     private void tilBaka(ActionEvent event) {
         //loka glugga
         ((Node)(event.getSource())).getScene().getWindow().hide();
     }
     
+    /**
+     * Kallað á úr foreldris glugga til að opna þennan dialog (AddTripUI)
+     * @param gagnagrunnur
+     * @throws SQLException 
+     */
     public void birtaAddTrip(Gagnagrunnur gagnagrunnur) throws SQLException{
         db = gagnagrunnur;
         upphafsstilla();
@@ -282,7 +285,11 @@ public class AddTripUIController implements Initializable {
      * @return 
      */
     private Boolean validate() {
+<<<<<<< HEAD
         String error = "-fx-control-inner-background: rgba(240, 0, 0, 0.2)";
+=======
+        String error = "-fx-control-inner-background: rgba(240, 0, 0, 0.3)";
+>>>>>>> master
         String borderError = "-fx-border-color: rgba(255, 0, 0, 1)";
         String color;
         

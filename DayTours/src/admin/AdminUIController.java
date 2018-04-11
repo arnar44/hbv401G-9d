@@ -30,34 +30,25 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Window;
 import model.Review;
 
 /**
  * FXML Controller class
- *
+ * Controller fyrir AdminUI
  * @author Arnar
  */
 public class AdminUIController implements Initializable {
 
     @FXML
-    private TextField jNotendaNafn;
-    @FXML
-    private Button jBaetaVid;
-    @FXML
-    private Button jSamþykkjaOll;
-    @FXML
-    private Button jTilBaka;
-    
-    private ObservableList<Ref> reviewList = FXCollections.observableArrayList();
-    private String adminNotandi;
-    private String adminpsw;
-    private Gagnagrunnur db = new Gagnagrunnur();
+    private TextField jNotendaNafn;    
     @FXML
     private AnchorPane adminDialog;
     @FXML
@@ -69,7 +60,8 @@ public class AdminUIController implements Initializable {
     private ResultSet results;
     private int virkurIndex;
     private ArrayList<Ref> refArray;
-    private Review review;
+    private ObservableList<Ref> reviewList = FXCollections.observableArrayList();
+    private Gagnagrunnur db;
 
     /**
      * Initializes the controller class.
@@ -140,24 +132,18 @@ public class AdminUIController implements Initializable {
             Logger.getLogger(DayToursUIController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        MultipleSelectionModel<Ref> lsm = (MultipleSelectionModel<Ref>) jReviewList.getSelectionModel();
-        lsm.selectedItemProperty().addListener(new ChangeListener<Ref>() {
+       jReviewList.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void changed(ObservableValue<? extends Ref> observable, Ref oldValue, Ref newValue) {
-                // Indexinn í listanum.             
-                virkurIndex = lsm.getSelectedIndex();
-                System.out.println(virkurIndex);
-                // Skoðum review nánar sem var ýtt á
-                if(virkurIndex >= 0){
-                  
+            public void handle(MouseEvent click) {
+
+                if (click.getClickCount() == 2) {
                     try {
                         makeDialog();
-                        //reviewDialogController.birtaReview(refArray.get(virkurIndex).getId(), db, self);
                     } catch (SQLException ex) {
                         Logger.getLogger(AdminUIController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                  
-                }            
+                    
+                }
             }
         });
     }
