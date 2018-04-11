@@ -154,16 +154,21 @@ public class Gagnagrunnur {
         return result;
     }
     
-    public Boolean deleteReviews(int id, int tourId) throws SQLException{
+    /**
+     * Eyðir review-i með id, - þegar admin samþykkir ekki review
+     * @param id
+     * @return
+     * @throws SQLException 
+     */
+    public Boolean deleteReview(int id) throws SQLException{
         // tengjust og skilum null ef ekki tókst að tengjast
         conn = connect();
         if(conn == null) return null;
         
-        String stmt = "DELETE FROM reviews WHERE id = ? AND tourId = ?";
+        String stmt = "DELETE FROM reviews WHERE id = ?";
         PreparedStatement pstmt = conn.prepareStatement(stmt);        
         
         pstmt.setInt(1, id);
-        pstmt.setInt(2, tourId);
         
         Boolean result = update(pstmt);
         // skila true ef það tókst að setja inn review, annars false
@@ -256,6 +261,24 @@ public class Gagnagrunnur {
         
         String stmt = "SELECT * FROM reviews WHERE accepted = 0";
         PreparedStatement pstmt = conn.prepareStatement(stmt);
+        
+        ResultSet trip = pstmt.executeQuery();
+        return trip;
+    }
+    /**
+     * Fá stakt Admin review
+     * @return
+     * @throws SQLException 
+     */
+    public ResultSet getAdminReview(int id) throws SQLException{
+        // tengjust og skilum null ef ekki tókst að tengjast
+        conn = connect();
+        if(conn == null) return null;
+        
+        String stmt = "SELECT * FROM reviews WHERE id = ?";
+        PreparedStatement pstmt = conn.prepareStatement(stmt);
+        
+        pstmt.setInt(1, id);
         
         ResultSet trip = pstmt.executeQuery();
         return trip;

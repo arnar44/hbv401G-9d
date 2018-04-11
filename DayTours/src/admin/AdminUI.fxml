@@ -23,5 +23,6 @@
       <Button fx:id="jSamþykkjaOll" layoutX="29.0" layoutY="560.0" mnemonicParsing="false" onAction="#samþykkjaOll" text="Samþykkja öll" />
       <Button fx:id="jTilBaka" layoutX="304.0" layoutY="560.0" mnemonicParsing="false" onAction="#tilBaka" text="Til baka" />
       <fx:include fx:id="addTripDialog" source="AddTripUI.fxml" />
+      <fx:include fx:id="reviewDialog" source="ReviewNanarUI.fxml" />
    </children>
 </AnchorPane>
