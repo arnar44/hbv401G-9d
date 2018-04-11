@@ -56,7 +56,7 @@ function maketour($, tourCatagory) {
 		pickup: $(infoBox).find('ul[data-toggle=dropdown-pickup] li.icon-text p strong').text(),
 		meet: $(infoBox).find('ul[data-toggle=dropdown-meet_on_location] li.icon-text p strong').text(),
 		departures: departFrom ? departFrom : 'Reykjavík',
-		price: $(infoBox).find('ul[data-toggle=dropdown-price] li.icon-text p strong').text().replace(/[^0-9]/, ''),
+		price: $(infoBox).find('ul[data-toggle=dropdown-price] li.icon-text p strong').text().replace(/[^0-9]/g, ''),
 		description: $(tourDescription).find('h2').text().replace(/\s+/g, " ").trim()
 	}
 
