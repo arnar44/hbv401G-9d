@@ -288,7 +288,7 @@ public class AdminUIController implements Initializable {
 }
 
     /**
-     * Heldur utanum title og id í lista.
+     * Heldur utanum title, id í lista.
      */
     class Ref {
         

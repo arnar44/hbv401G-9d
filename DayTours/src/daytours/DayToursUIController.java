@@ -43,6 +43,7 @@ import javafx.scene.control.MultipleSelectionModel;
 import database.Gagnagrunnur;
 import java.util.ArrayList;
 import java.util.Map;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.Initializable;
 import model.Trip;
@@ -82,19 +83,27 @@ public class DayToursUIController implements Initializable {
     private int rowcount = 0;
     private ArrayList<Ref> refArray;
     private Trip trip;
+    @FXML
+    private ComboBox<String> jDifficulty;
     
 
+    /**
+     * Initialize fall fyrir controllerinn
+     * Setur upp gögn í viðmóti
+     * Heldur utanum index á listahlut sem ýtt er á.
+     * @param url
+     * @param rb 
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb){ 
-        
         try {
             updateResults();
-            tripList.addAll(updateList());
-            jTripList.setItems(tripList);
+            updateUI();
         } catch (SQLException ex) {
             Logger.getLogger(DayToursUIController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        //Heldur utanum index á listahlut sem er valinn
         MultipleSelectionModel<Ref> lsm = (MultipleSelectionModel<Ref>) jTripList.getSelectionModel();
         lsm.selectedItemProperty().addListener(new ChangeListener<Ref>() {
             @Override
@@ -105,102 +114,139 @@ public class DayToursUIController implements Initializable {
             }
         });
     }
+
+    /**
+     * Uppfærir öll comboboxes og lista í viðmóti
+     * @throws SQLException 
+     */
+    private void updateUI() throws SQLException {
+        categoryBox();
+        difficultyBox();
+        locationBox();
+        priceBox();
+        updateList();
+    }
     
-        /**
-         * Þegar ýtt er á "login" í menubar er kallað á login() sem
-         * Býr til innskáningar-dialog
-         * @param event 
-         */
-	// Event Listener on MenuItem.onAction
-	@FXML
-	public void login(ActionEvent event) {
-        
-        // Búa til dialog
-        Dialog dialog = new Dialog<>();
-        dialog.setTitle("Innskáning");
-        dialog.setHeaderText("Vinsamlegast skráðu þig inn");
+    /**
+     * Þegar ýtt er á "login" í menubar er kallað á login() sem
+     * Býr til innskáningar-dialog
+     * @param event 
+     */
+    // Event Listener on MenuItem.onAction
+    @FXML
+    public void login(ActionEvent event) {
 
-        // takkar í dialog
+    // Búa til dialog
+    Dialog dialog = new Dialog<>();
+    dialog.setTitle("Innskáning");
+    dialog.setHeaderText("Vinsamlegast skráðu þig inn");
 
-        ButtonType loginButtonType = new ButtonType("Innskrá", ButtonData.OK_DONE);
-        ButtonType tilBakaButtonType = new ButtonType("Til baka", ButtonData.CANCEL_CLOSE);
-        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, tilBakaButtonType);
+    // takkar í dialog
 
-        // Username og psw label og gluggar
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        
-        TextField username = new TextField();
-        username.setPromptText("Notendanafn");
-        PasswordField password = new PasswordField();
-        password.setPromptText("Lykilorð");
-        // útlit dialogs
-        grid.add(new Label("Notendanafn:"), 0, 0);
-        grid.add(username, 1, 0);
-        grid.add(new Label("Lykilorð:"), 0, 1);
-        grid.add(password, 1, 1);
-            
-        dialog.getDialogPane().setContent(grid);
-            
-        final Button loginButton = (Button) dialog.getDialogPane().lookupButton(loginButtonType);
-        //Fylgjumst með þegar ýtt er á "login" takkann
-        loginButton.addEventFilter(ActionEvent.ACTION, ae -> {
-            
-        //Sækja hvað var slegið inn
-        String inputUser = username.getText();
-        String inputPSW = password.getText();
-        ResultSet user;
-        /*
-            try {
-                // Ath hvort notandi með þetta notendanafn og psw sé til
-                user = gagnagrunnur.getUser(inputUser,inputPSW);
-                // Ef enginn notandi fannst í gagnagrunni
-                if(!user.next()){
-                    // Latum notanda fá eftirfarandi skilaboð og hreinsum reiti
-                    dialog.setHeaderText("Rangt notendanafn eða lykilorð");
-                    username.setText("");
-                    password.setText("");
-                    // consumeum-enventinn að ýtt var á login-takkann svo dialogin haldist opinn
-                    ae.consume();
-                    return;
-                }
-            } catch (SQLException ex) {
-                System.out.println("Tenging við gagnagrunn næst ekki");
-                Logger.getLogger(DayToursUIController.class.getName()).log(Level.SEVERE, null, ex);
+    ButtonType loginButtonType = new ButtonType("Innskrá", ButtonData.OK_DONE);
+    ButtonType tilBakaButtonType = new ButtonType("Til baka", ButtonData.CANCEL_CLOSE);
+    dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, tilBakaButtonType);
+
+    // Username og psw label og gluggar
+    GridPane grid = new GridPane();
+    grid.setHgap(10);
+    grid.setVgap(10);
+
+    TextField username = new TextField();
+    username.setPromptText("Notendanafn");
+    PasswordField password = new PasswordField();
+    password.setPromptText("Lykilorð");
+    // útlit dialogs
+    grid.add(new Label("Notendanafn:"), 0, 0);
+    grid.add(username, 1, 0);
+    grid.add(new Label("Lykilorð:"), 0, 1);
+    grid.add(password, 1, 1);
+
+    dialog.getDialogPane().setContent(grid);
+
+    final Button loginButton = (Button) dialog.getDialogPane().lookupButton(loginButtonType);
+    //Fylgjumst með þegar ýtt er á "login" takkann
+    loginButton.addEventFilter(ActionEvent.ACTION, ae -> {
+
+    //Sækja hvað var slegið inn
+    String inputUser = username.getText();
+    String inputPSW = password.getText();
+    ResultSet user;
+    /*
+        try {
+            // Ath hvort notandi með þetta notendanafn og psw sé til
+            user = gagnagrunnur.getUser(inputUser,inputPSW);
+            // Ef enginn notandi fannst í gagnagrunni
+            if(!user.next()){
+                // Latum notanda fá eftirfarandi skilaboð og hreinsum reiti
+                dialog.setHeaderText("Rangt notendanafn eða lykilorð");
+                username.setText("");
+                password.setText("");
+                // consumeum-enventinn að ýtt var á login-takkann svo dialogin haldist opinn
+                ae.consume();
                 return;
-            } 
-            */
-            // EF við komumst hingað var rétt notendanaf & lykilorð slegið inn, birta adminUI   
-            adminDialogController.birtaAdminUI(username.getText(), gagnagrunnur);
-        });
-            
-        dialog.show();
-	}
+            }
+        } catch (SQLException ex) {
+            System.out.println("Tenging við gagnagrunn næst ekki");
+            Logger.getLogger(DayToursUIController.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        } 
+        */
+        // EF við komumst hingað var rétt notendanaf & lykilorð slegið inn, birta adminUI   
+        adminDialogController.birtaAdminUI(username.getText(), gagnagrunnur);
+    });
+
+    dialog.show();
+    }
   
-	// Event Listener on MenuItem.onAction
-	@FXML
-	public void closePlatform(ActionEvent event) {
-		// TODO Autogenerated
-	}
-	// Event Listener on ImageView.onMouseReleased
+    /**
+     * Lokar forriti.
+     * @param event 
+     */
     @FXML
-	public void languageEnglish(MouseEvent event) {
-		// TODO Autogenerated
-	}
-	// Event Listener on ImageView.onMouseReleased
-    @FXML
-    public void languageIcelandic(MouseEvent event) {
-		// TODO Autogenerated
+    public void closePlatform(ActionEvent event) {
+        Platform.exit();
     }
 
-    // Event Listener on Button[#jSearch].onAction
+        
+    /**
+     * Sendir filter parametra á Gagnagrunnur.searchTrips()
+     * Fær til baka ResultSet
+     * Uppfærir svo lista samkvæmt nýja ResultSet
+     * @param event
+     * @throws SQLException 
+     */
     @FXML
     public void filter(ActionEvent event) throws SQLException {
-            //TODO 
-        }
+        String[] filter = new String[5];
+        String location = jLocation.getValue();
+        String difficulty = jDifficulty.getValue();
+        String category = jCategory.getValue();
+        String price = jPrice.getValue();
+        Boolean pickup = jPickup.isSelected();
+        if(price == "All" ||price == null) filter[0] = "0-%";
+        else if (price == ">100000") filter[0] = "100000-%";
+        else filter[0] = price;
+        if(location == "All" ||location == null) filter[1] = "%";
+        else filter[1] = location;
+        if(difficulty == "All" || difficulty == null) filter[2] = "%";
+        else filter[2] = difficulty;     
+        if(category == "All" || category == null) filter[3] = "%";
+        else filter[3] = category;  
+        if(pickup) filter[4] = "Yes";
+        else filter[4] = "%";
+            
+        results = gagnagrunnur.searchTrips(filter);
+        updateList();
+            
+    }
 
-    // Event Listener on Button[#jShowTrips].onAction
+    /**
+     * Þegar ýtt er á View Trip
+     * Býr til Trip hlut og sendir í TipUIController.
+     * @param event
+     * @throws SQLException 
+     */
     @FXML
     public void showTrips(ActionEvent event) throws SQLException {
         updateResults();
@@ -242,8 +288,8 @@ public class DayToursUIController implements Initializable {
      * @return ObservableList
      * @throws SQLException 
      */
-    private ArrayList<Ref> updateList() throws SQLException {
-        
+    private void updateList() throws SQLException {
+        tripList.clear();
         refArray = new ArrayList<Ref>(); 
         ResultSet rs = results;
         while (rs.next()) {
@@ -251,7 +297,8 @@ public class DayToursUIController implements Initializable {
             int id = rs.getInt("Id");
             referanceArray(id, title);
         }
-        return refArray;
+        tripList.addAll(refArray);
+        jTripList.setItems(tripList);
     }
 
     
@@ -264,31 +311,83 @@ public class DayToursUIController implements Initializable {
     private void referanceArray(int id, String title){
           refArray.add(new Ref(id, title));
         }
+    
+     /**
+     * Initialize choicebox fyrir categories
+     * @throws SQLException 
+     */
+    private void categoryBox() throws SQLException{
+        ResultSet rs = gagnagrunnur.getCategories();
+        ObservableList<String> list = FXCollections.observableArrayList();
+        list.add("All");
+        while(rs.next()){
+            list.add(rs.getString("category"));
+        }
+        jCategory.setItems(list);
+    }
+    
+     /**
+     * Initialize choicebox fyrir difficulty
+     * @throws SQLException 
+     */
+    private void difficultyBox() throws SQLException{
+        ResultSet rs = gagnagrunnur.getLevels();
+        ObservableList<String> list = FXCollections.observableArrayList();
+        list.add("All");
+        while(rs.next()){
+            list.add(rs.getString("level"));
+        }
+        jDifficulty.setItems(list);
+    }
+    
+    /**
+     * Initialize choicebox fyrir difficulty
+     * @throws SQLException 
+     */
+    private void locationBox() throws SQLException{
+        ResultSet rs = gagnagrunnur.getLocation();
+        ObservableList<String> list = FXCollections.observableArrayList();
+        list.add("All");
+        while(rs.next()){
+            list.add(rs.getString("departures"));
+        }
+        jLocation.setItems(list);
+    }
+    
+     /**
+     * Initialize choicebox fyrir price
+     * @throws SQLException 
+     */
+    private void priceBox() throws SQLException{
+        ObservableList<String> list = FXCollections.observableArrayList();
+        list.addAll("All", "0-15000", "15000-30000", "30000-60000","60000-100000", ">100000");
+        jPrice.setItems(list);
+    }
 }
 
-    /**
-     * Heldur utanum title, id í lista.
-     */
-    class Ref {
-        
-        private int id;
-        private String title;
-        
-        public Ref(int id, String title) {
-            this.id = id;
-            this.title = title;
-        }
-        
-        public String getTitle(){
-            return title;
-        }
-        
-        public int getId() {
-            return id;
-        }
-        
-        @Override
-        public String toString() {
-            return getTitle();
-        }
+/**
+ * Heldur utanum title, id í lista.
+ */
+class Ref {
+
+    private int id;
+    private String title;
+
+    public Ref(int id, String title) {
+        this.id = id;
+        this.title = title;
+    }
+
+    public String getTitle(){
+        return title;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return getTitle();
+    }
 }
