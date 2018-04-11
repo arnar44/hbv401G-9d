@@ -124,15 +124,21 @@ public class Gagnagrunnur {
         conn = connect();
         if(conn == null) return null;
         
-        String stmt = "INSERT INTO tours (title, price, location, duration, difficulty, description) VALUES (?,?,?,?,?,?)";
+        String stmt;
+        stmt = "INSERT INTO tours (title, price, category, duration, level, departures, meet, pickup, availability, description) VALUES (?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement pstmt = conn.prepareStatement(stmt);
                 
         pstmt.setString(1, trip.getTitle());
         pstmt.setString(2, trip.getPrice());
-        pstmt.setString(3, trip.getLocation());
+        pstmt.setString(3, trip.getCategory());
         pstmt.setString(4, trip.getDuration());
         pstmt.setString(5, trip.getDifficulty());
-        pstmt.setString(6, trip.getItinirary());
+        pstmt.setString(6, trip.getLocation());
+        pstmt.setString(7, trip.getMeet());
+        pstmt.setString(8, trip.getPickup());
+        pstmt.setString(9, trip.getAvailability());
+        pstmt.setString(10, trip.getItinirary());
+        
         
         Boolean result = update(pstmt);
         // skila true ef það tókst að setja inn review, annars false
@@ -311,5 +317,42 @@ public class Gagnagrunnur {
         
         return trips;
     }
+    /**
+     * Skilar öllum flokkaheitum (ekki endurteknum)
+     * @return
+     * @throws SQLException 
+     */
+    public ResultSet getCategories() throws SQLException{
+        // tengjust og skilum null ef ekki tókst að tengjast
+        conn = connect();
+        if(conn == null) return null;
+        
+        String stmt = "SELECT DISTINCT category FROM tours";
+        PreparedStatement pstmt = conn.prepareStatement(stmt);
+        
+        ResultSet trips = pstmt.executeQuery();
+        
+        return trips;
+    }
+    
+    /**
+     * Skilar öllum erfiðleikastigum
+     * @return
+     * @throws SQLException 
+     */
+    public ResultSet getLevels() throws SQLException{
+        // tengjust og skilum null ef ekki tókst að tengjast
+        conn = connect();
+        if(conn == null) return null;
+        
+        String stmt = "SELECT DISTINCT level FROM tours";
+        PreparedStatement pstmt = conn.prepareStatement(stmt);
+        
+        ResultSet trips = pstmt.executeQuery();
+        
+        return trips;
+    }
+    
+    
     
 }

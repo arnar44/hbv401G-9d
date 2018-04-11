@@ -105,8 +105,8 @@ public class AdminUIController implements Initializable {
      * @param event 
      */
     @FXML
-    public void buaTilFerd(ActionEvent event) {   
-        addTripDialogController.birtaAddTrip();
+    public void buaTilFerd(ActionEvent event) throws SQLException {   
+        addTripDialogController.birtaAddTrip(db);
     }
     
     /**
