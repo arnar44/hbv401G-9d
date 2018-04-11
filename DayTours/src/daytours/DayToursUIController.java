@@ -52,25 +52,13 @@ import model.Trip;
 
 public class DayToursUIController implements Initializable {
     @FXML
-    private Label jDaytours;
-    @FXML
     private AnchorPane mainMenu;
     @FXML
-    private Label jSearchParameters;
+    private ComboBox<String> jPrice;
     @FXML
-    private Label jPrice;
+    private ComboBox<String> jLocation;
     @FXML
-    private Label jLocation;
-    @FXML
-    private ComboBox<?> jCategory;
-    @FXML
-    private CheckBox jOffers;
-    @FXML
-    private CheckBox jPopular;
-    @FXML
-    private Button jSearch;
-    @FXML
-    private Button jShowTrips;
+    private ComboBox<String> jCategory;
     private ObservableList<Ref> tripList = FXCollections.observableArrayList();
     @FXML
     private ListView<Ref> jTripList;
@@ -87,6 +75,8 @@ public class DayToursUIController implements Initializable {
     private Trip trip;
     @FXML
     private ComboBox<String> jDifficulty;
+    @FXML
+    private CheckBox jPickup;
     
 
     /**
@@ -138,11 +128,6 @@ public class DayToursUIController implements Initializable {
     @FXML
     public void login(ActionEvent event) {
         
-        // Búa til dialog
-        Dialog dialog = new Dialog<>();
-        dialog.setTitle("Innskáning");
-        dialog.setHeaderText("Vinsamlegast skráðu þig inn");
-
     // Búa til dialog
     Dialog dialog = new Dialog<>();
     dialog.setTitle("Innskáning");
@@ -198,7 +183,8 @@ public class DayToursUIController implements Initializable {
             adminDialogController.birtaAdminUI(username.getText(), gagnagrunnur);
             try {
                 //Refreshum þegar adminDialogUI er lokað þá getur verið að ferð hafi bæst við
-                refreshList();
+                updateResults();
+                updateUI();
             } catch (SQLException ex) {
                 Logger.getLogger(DayToursUIController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -320,17 +306,6 @@ public class DayToursUIController implements Initializable {
         refArray.add(new Ref(id, title));
     }
     
-    /**
-     * Refresh lista þegar gluggi er opnaður og þegar nýrri ferð
-     * er bætt við í AddTripUI
-     */
-    public void refreshList() throws SQLException{
-        updateResults();
-        tripList.clear();
-        tripList.addAll(updateList());
-        jTripList.setItems(tripList); 
-    }
-}
 
     /**
      * Heldur utanum title, id í lista.
@@ -410,3 +385,4 @@ class Ref {
         return getTitle();
     }
 }
+

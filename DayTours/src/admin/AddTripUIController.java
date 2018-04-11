@@ -281,11 +281,8 @@ public class AddTripUIController implements Initializable {
      * @return 
      */
     private Boolean validate() {
-<<<<<<< HEAD
         String error = "-fx-control-inner-background: rgba(240, 0, 0, 0.2)";
-=======
-        String error = "-fx-control-inner-background: rgba(240, 0, 0, 0.3)";
->>>>>>> master
+
         String borderError = "-fx-border-color: rgba(255, 0, 0, 1)";
         String color;
         
