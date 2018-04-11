@@ -114,6 +114,7 @@ public class DayToursUIController implements Initializable {
 	// Event Listener on MenuItem.onAction
 	@FXML
 	public void login(ActionEvent event) {
+        
         // Búa til dialog
         Dialog dialog = new Dialog<>();
         dialog.setTitle("Innskáning");
@@ -150,6 +151,7 @@ public class DayToursUIController implements Initializable {
         String inputUser = username.getText();
         String inputPSW = password.getText();
         ResultSet user;
+        /*
             try {
                 // Ath hvort notandi með þetta notendanafn og psw sé til
                 user = gagnagrunnur.getUser(inputUser,inputPSW);
@@ -168,7 +170,7 @@ public class DayToursUIController implements Initializable {
                 Logger.getLogger(DayToursUIController.class.getName()).log(Level.SEVERE, null, ex);
                 return;
             } 
-            
+            */
             // EF við komumst hingað var rétt notendanaf & lykilorð slegið inn, birta adminUI   
             adminDialogController.birtaAdminUI(username.getText(), gagnagrunnur);
         });

@@ -45,7 +45,7 @@ public class Trip {
     }
 
     public String getLocation() {
-		return location;
+        return location;
     }
 
     public String getDuration() {
