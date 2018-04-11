@@ -12,9 +12,6 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,7 +30,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Window;
 import model.Trip;
@@ -187,7 +183,7 @@ public class AddTripUIController implements Initializable {
             public void handle(ActionEvent event) {
                 if(validate()){
                     try {
-                        // senda í gagnagrunn og loka
+                        // senda í gagnagrunn og loka þessum glugga
                         makeTrip();
                         ((Node)(event.getSource())).getScene().getWindow().hide();
                     } catch (SQLException ex) {
