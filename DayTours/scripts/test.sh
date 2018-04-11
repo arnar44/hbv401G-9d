@@ -1,7 +1,7 @@
-echo start scraper.js
+echo shell starting arcticScraper
 
 node ./scripts/arcticScraper.js
 
 wait
 
-echo finish
+echo finish running shell scripts

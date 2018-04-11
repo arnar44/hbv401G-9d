@@ -68,14 +68,16 @@ public class Gagnagrunnur {
         
         //Þetta verður sirka svona, sjáum til hverju við viljum leita af
         // Sækja verðbilið
-        String[] price = params[0].split("-");
-        String stmt = "SELECT * FROM tours WHERE price BETWEEN ? AND ? AND location = ? AND difficulty = ?";
+        //String[] price = params[0].split("-");
+        //String stmt = "SELECT * FROM tours WHERE price BETWEEN ? AND ? AND location LIKE ? AND difficulty LIKE ?";
+        String stmt = "SELECT * FROM tours WHERE departures LIKE ? AND level LIKE ? AND category LIKE ?";
         PreparedStatement pstmt = conn.prepareStatement(stmt);
         
-        pstmt.setString(1, price[0]);
-        pstmt.setString(2, price[1]);
-        pstmt.setString(3, params[1]);
-        pstmt.setString(4, params[2]);
+        //pstmt.setString(1, price[0]);
+        //pstmt.setString(2, price[1]);
+        pstmt.setString(1, params[1]);
+        pstmt.setString(2, params[2]);
+        pstmt.setString(3, params[3]);
         
         ResultSet trips = pstmt.executeQuery();
         return trips;
@@ -115,6 +117,7 @@ public class Gagnagrunnur {
         pstmt.setInt(4, purchaser.getSeatQt());
         
         Boolean result = update(pstmt);
+        System.out.println(result);
         // skila true ef það tókst að setja inn review, annars false
         return result;
     }
@@ -124,15 +127,21 @@ public class Gagnagrunnur {
         conn = connect();
         if(conn == null) return null;
         
-        String stmt = "INSERT INTO tours (title, price, location, duration, difficulty, description) VALUES (?,?,?,?,?,?)";
+        String stmt;
+        stmt = "INSERT INTO tours (title, price, category, duration, level, departures, meet, pickup, availability, description) VALUES (?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement pstmt = conn.prepareStatement(stmt);
                 
         pstmt.setString(1, trip.getTitle());
         pstmt.setString(2, trip.getPrice());
-        pstmt.setString(3, trip.getLocation());
+        pstmt.setString(3, trip.getCategory());
         pstmt.setString(4, trip.getDuration());
         pstmt.setString(5, trip.getDifficulty());
-        pstmt.setString(6, trip.getItinirary());
+        pstmt.setString(6, trip.getLocation());
+        pstmt.setString(7, trip.getMeet());
+        pstmt.setString(8, trip.getPickup());
+        pstmt.setString(9, trip.getAvailability());
+        pstmt.setString(10, trip.getItinirary());
+        
         
         Boolean result = update(pstmt);
         // skila true ef það tókst að setja inn review, annars false
@@ -154,16 +163,21 @@ public class Gagnagrunnur {
         return result;
     }
     
-    public Boolean deleteReviews(int id, int tourId) throws SQLException{
+    /**
+     * Eyðir review-i með id, - þegar admin samþykkir ekki review
+     * @param id
+     * @return
+     * @throws SQLException 
+     */
+    public Boolean deleteReview(int id) throws SQLException{
         // tengjust og skilum null ef ekki tókst að tengjast
         conn = connect();
         if(conn == null) return null;
         
-        String stmt = "DELETE FROM reviews WHERE id = ? AND tourId = ?";
+        String stmt = "DELETE FROM reviews WHERE id = ?";
         PreparedStatement pstmt = conn.prepareStatement(stmt);        
         
         pstmt.setInt(1, id);
-        pstmt.setInt(2, tourId);
         
         Boolean result = update(pstmt);
         // skila true ef það tókst að setja inn review, annars false
@@ -260,6 +274,24 @@ public class Gagnagrunnur {
         ResultSet trip = pstmt.executeQuery();
         return trip;
     }
+    /**
+     * Fá stakt Admin review
+     * @return
+     * @throws SQLException 
+     */
+    public ResultSet getAdminReview(int id) throws SQLException{
+        // tengjust og skilum null ef ekki tókst að tengjast
+        conn = connect();
+        if(conn == null) return null;
+        
+        String stmt = "SELECT * FROM reviews WHERE id = ?";
+        PreparedStatement pstmt = conn.prepareStatement(stmt);
+        
+        pstmt.setInt(1, id);
+        
+        ResultSet trip = pstmt.executeQuery();
+        return trip;
+    }
     
     public ResultSet getUser(String username, String password) throws SQLException{
         // tengjust og skilum null ef ekki tókst að tengjast
@@ -288,5 +320,60 @@ public class Gagnagrunnur {
         
         return trips;
     }
+    /**
+     * Skilar öllum flokkaheitum (ekki endurteknum)
+     * @return
+     * @throws SQLException 
+     */
+    public ResultSet getCategories() throws SQLException{
+        // tengjust og skilum null ef ekki tókst að tengjast
+        conn = connect();
+        if(conn == null) return null;
+        
+        String stmt = "SELECT DISTINCT category FROM tours";
+        PreparedStatement pstmt = conn.prepareStatement(stmt);
+        
+        ResultSet trips = pstmt.executeQuery();
+        
+        return trips;
+    }
+    
+    /**
+     * Skilar öllum erfiðleikastigum
+     * @return
+     * @throws SQLException 
+     */
+    public ResultSet getLevels() throws SQLException{
+        // tengjust og skilum null ef ekki tókst að tengjast
+        conn = connect();
+        if(conn == null) return null;
+        
+        String stmt = "SELECT DISTINCT level FROM tours";
+        PreparedStatement pstmt = conn.prepareStatement(stmt);
+        
+        ResultSet trips = pstmt.executeQuery();
+        
+        return trips;
+    }
+    
+     /**
+     * Skilar öllum staðsetningum
+     * @return
+     * @throws SQLException 
+     */
+    public ResultSet getLocation() throws SQLException{
+        // tengjust og skilum null ef ekki tókst að tengjast
+        conn = connect();
+        if(conn == null) return null;
+        
+        String stmt = "SELECT DISTINCT departures FROM tours";
+        PreparedStatement pstmt = conn.prepareStatement(stmt);
+        
+        ResultSet trips = pstmt.executeQuery();
+        
+        return trips;
+    }
+    
+    
     
 }
