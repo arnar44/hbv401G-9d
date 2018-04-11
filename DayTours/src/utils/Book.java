@@ -18,10 +18,16 @@ import model.Purchaser;
  */
 public class Book {
     
+    private Gagnagrunnur db;
+    
+    public void setDb(Gagnagrunnur db) {
+        this.db = db;
+    }
+    
     public int[] makeBooking(int id, String name, String email, int seatQt) throws SQLException{
         int[] validation = validate(name, email);
         
-        if(validation[0] == 1 || validation[1] == 0) {
+        if(validation[0] == 1 || validation[1] == 1) {
             return validation;
         }
         
@@ -30,9 +36,8 @@ public class Book {
         Purchaser client = new Purchaser(name, email, seatQt);
         Booking book = new Booking(id, client);
         
-        Gagnagrunnur db = new Gagnagrunnur();
-        
         db.updateBooking(id, book);
+        System.out.println("Sendum bókun í Gagnagrunn.java");
         
         return validation;
         

@@ -115,6 +115,7 @@ public class Gagnagrunnur {
         pstmt.setInt(4, purchaser.getSeatQt());
         
         Boolean result = update(pstmt);
+        System.out.println(result);
         // skila true ef það tókst að setja inn review, annars false
         return result;
     }

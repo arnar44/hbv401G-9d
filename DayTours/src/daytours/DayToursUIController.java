@@ -225,6 +225,7 @@ public class DayToursUIController implements Initializable {
             }
         }
         
+        tripDialogController.setDb(gagnagrunnur);
         tripDialogController.setTrip(trip);
     }
     
