@@ -68,16 +68,18 @@ public class Gagnagrunnur {
         
         //Þetta verður sirka svona, sjáum til hverju við viljum leita af
         // Sækja verðbilið
-        //String[] price = params[0].split("-");
+        String[] price = params[0].split("-");
+        
         //String stmt = "SELECT * FROM tours WHERE price BETWEEN ? AND ? AND location LIKE ? AND difficulty LIKE ?";
-        String stmt = "SELECT * FROM tours WHERE departures LIKE ? AND level LIKE ? AND category LIKE ?";
+        String stmt = "SELECT * FROM tours WHERE price BETWEEN ? AND ? AND departures LIKE ? AND level LIKE ? AND category LIKE ? AND pickup LIKE ?";
         PreparedStatement pstmt = conn.prepareStatement(stmt);
         
-        //pstmt.setString(1, price[0]);
-        //pstmt.setString(2, price[1]);
-        pstmt.setString(1, params[1]);
-        pstmt.setString(2, params[2]);
-        pstmt.setString(3, params[3]);
+        pstmt.setString(1, price[0]);
+        pstmt.setString(2, price[1]);
+        pstmt.setString(3, params[1]);
+        pstmt.setString(4, params[2]);
+        pstmt.setString(5, params[3]);
+        pstmt.setString(6, params[4]);
         
         ResultSet trips = pstmt.executeQuery();
         return trips;

@@ -33,8 +33,8 @@
       <Label layoutX="44.0" layoutY="493.0" text="Price" />
       <ComboBox fx:id="jLocation" layoutX="185.0" layoutY="583.0" prefHeight="25.0" prefWidth="115.0" />
       <Label layoutX="185.0" layoutY="559.0" text="Location" />
-      <Label layoutX="185.0" layoutY="497.0" text="Category" />
-      <ComboBox fx:id="jCategory" layoutX="185.0" layoutY="521.0" prefHeight="25.0" prefWidth="115.0" />
+      <Label layoutX="185.0" layoutY="493.0" text="Category" />
+      <ComboBox fx:id="jCategory" layoutX="185.0" layoutY="517.0" prefHeight="25.0" prefWidth="115.0" />
       <Button layoutX="543.0" layoutY="577.0" mnemonicParsing="false" onAction="#filter" prefHeight="37.0" prefWidth="115.0" text="Search">
          <font>
             <Font size="16.0" />
@@ -49,7 +49,7 @@
       <fx:include fx:id="tripDialog" source="TripUI.fxml" />
       <ComboBox fx:id="jPrice" layoutX="44.0" layoutY="517.0" prefHeight="25.0" prefWidth="115.0" />
       <Label layoutX="49.0" layoutY="559.0" prefHeight="21.0" prefWidth="104.0" text="Difficulty level" />
-      <CheckBox fx:id="jPopular" layoutX="345.0" layoutY="522.0" mnemonicParsing="false" text="Pickup" />
+      <CheckBox fx:id="jPickup" layoutX="345.0" layoutY="519.0" mnemonicParsing="false" text="Pickup" />
       <ComboBox fx:id="jDifficulty" layoutX="44.0" layoutY="583.0" prefHeight="25.0" prefWidth="115.0" />
    </children>
 </AnchorPane>
