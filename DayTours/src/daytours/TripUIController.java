@@ -20,9 +20,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
@@ -33,7 +35,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Window;
 import model.Review;
 import model.Trip;
@@ -47,7 +51,7 @@ import utils.Book;
 public class TripUIController implements Initializable {
 
     private Trip dayTour;
-    private Gagnagrunnur db = new Gagnagrunnur();
+    private Gagnagrunnur db;
     private ObservableList<Integer> comboList = FXCollections.observableArrayList();
     private ObservableList<Ref> reviewList = FXCollections.observableArrayList();
     private ResultSet results;
@@ -94,6 +98,105 @@ public class TripUIController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         comboList.addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
         jpurchQuantity.setItems(comboList);
+        
+        jreviewList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent click) {
+
+                if (click.getClickCount() == 2) {
+                    try {
+                        makeDialog();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(AdminUIController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                }
+            }
+        });
+    }
+    //_------_-_-Þarf að breyta
+        private void makeDialog() throws SQLException{
+        ResultSet result = db.getAdminReview(refArray.get(virkurIndex).getId());
+        if(!result.next()){
+            //TODO villa kom upp, review finnst ekki
+        }
+        
+        // Búa til dialog
+        Dialog dialog = new Dialog<>();
+        dialog.setTitle("Review");
+        dialog.setHeaderText("Review details");
+
+        // takkar í dialog
+        ButtonType acceptButtonType = new ButtonType("Accept", ButtonBar.ButtonData.OK_DONE);
+        ButtonType declineButtonType = new ButtonType("Decline", ButtonBar.ButtonData.OK_DONE);
+        ButtonType backButtonType = new ButtonType("Back", ButtonBar.ButtonData.CANCEL_CLOSE);
+        dialog.getDialogPane().getButtonTypes().addAll(acceptButtonType, declineButtonType, backButtonType);
+        
+        // Búa til útlit og hluti í útliti
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        
+        TextField tripId = new TextField();
+        tripId.setText(result.getString("tourId"));
+        TextField name = new TextField();
+        name.setText(result.getString("name"));
+        TextField email = new TextField();
+        email.setText(result.getString("email"));
+        TextField date = new TextField();
+        date.setText(result.getString("date"));
+        TextArea review = new TextArea();
+        review.setText(result.getString("review"));
+        
+        tripId.setEditable(false);
+        name.setEditable(false);
+        email.setEditable(false);
+        date.setEditable(false);
+        review.setEditable(false);
+        
+        review.setPrefColumnCount(20);
+        review.setPrefRowCount(6);
+        
+        // útlit dialogs
+        grid.add(new Label("Tour ID"), 0, 0);
+        grid.add(tripId, 2, 0);
+        grid.add(new Label("Name"), 0, 1);
+        grid.add(name, 2, 1);
+        grid.add(new Label("Email"), 0, 2);
+        grid.add(email, 2, 2);
+        grid.add(new Label("Date"), 0, 3);
+        grid.add(date, 2, 3);
+        grid.add(new Label("Review"), 0,4);
+        grid.add(review, 2, 5);
+        
+        //setja grid i dialog
+        dialog.getDialogPane().setContent(grid);
+        
+        //Handlerar fyrir takka
+        final Button acceptButton = (Button) dialog.getDialogPane().lookupButton(acceptButtonType);
+        final Button declineButton = (Button) dialog.getDialogPane().lookupButton(declineButtonType);
+        
+        acceptButton.addEventFilter(ActionEvent.ACTION, ae -> { 
+            try {
+                //samþykkja review
+                db.confirmReview(refArray.get(virkurIndex).getId());
+                //Erum búin að samþykkja eitt review, það dettur þá úr lista á parent (AdminUI)
+                refresh();
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminUIController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        declineButton.addEventFilter(ActionEvent.ACTION, ae -> { 
+            try {
+                db.deleteReview(refArray.get(virkurIndex).getId());
+                //Erum búin að samþykkja eitt review, það dettur þá úr lista á parent (AdminUI)
+                refresh();
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminUIController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        
+        dialog.show();
     }
 
     private void jbookTrip(ActionEvent event) {
@@ -166,6 +269,7 @@ public class TripUIController implements Initializable {
 
     private void book() {
         Book booking = new Book();
+        booking.setDb(this.db);
 
         String name = jpurchName.getText();
         String email = jpurchEmail.getText();
@@ -188,6 +292,10 @@ public class TripUIController implements Initializable {
         if (validation[1] == 1) {
             jpurchEmail.setStyle("-fx-background-color: red;");
         }
+    }
+    
+    public void setDb(Gagnagrunnur db) {
+        this.db = db;
     }
 
     public void setTrip(Trip trip) {
