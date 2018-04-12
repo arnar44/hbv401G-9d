@@ -51,8 +51,6 @@ public class AdminUIController implements Initializable {
     private AddTripUIController addTripDialogController;
     @FXML
     private ListView<Ref> jReviewList;
-    @FXML
-    private DayToursUIController parent;
     
     private ResultSet results;
     private int virkurIndex;
@@ -122,10 +120,12 @@ public class AdminUIController implements Initializable {
         d.showAndWait();
     }
     
-    public AnchorPane getDialog(){
-        return adminDialog;
-    }
-    
+    /**
+     * Kall á refresh til að upphafsstilla töflu með ósamþykktum review-um
+     * Setur einnig eventhandler á það ef tvísmellt er á hlut í töflunni,
+     * þá er opnaður dialog gluggi sem sýnir review nánar og býður admin
+     * upp á að samþykkja eða hafna revew-i
+     */
     public void upphafsstilla(){
         try {
             refresh();
@@ -149,11 +149,14 @@ public class AdminUIController implements Initializable {
         });
     }
     
+    /**
+     * Ef tvísmellt var á stak í töflu þá er opnaður review-dialog sem
+     * sýnir review-nánar
+     * @throws SQLException 
+     */
     private void makeDialog() throws SQLException{
+        //Sækja review með þessu id (id á review sem var smellt á í töflunni)
         ResultSet result = db.getAdminReview(refArray.get(virkurIndex).getId());
-        if(!result.next()){
-            //TODO villa kom upp, review finnst ekki
-        }
         
         // Búa til dialog
         Dialog dialog = new Dialog<>();
@@ -210,6 +213,7 @@ public class AdminUIController implements Initializable {
         final Button acceptButton = (Button) dialog.getDialogPane().lookupButton(acceptButtonType);
         final Button declineButton = (Button) dialog.getDialogPane().lookupButton(declineButtonType);
         
+        // Eventhandler fyrir accept takkan (review er samþykkt)
         acceptButton.addEventFilter(ActionEvent.ACTION, ae -> { 
             try {
                 //samþykkja review
@@ -220,8 +224,10 @@ public class AdminUIController implements Initializable {
                 Logger.getLogger(AdminUIController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+        // Eventhandler fyrir decline takkan (review er hafnað og því eytt)
         declineButton.addEventFilter(ActionEvent.ACTION, ae -> { 
             try {
+                // Eyða review
                 db.deleteReview(refArray.get(virkurIndex).getId());
                 //Erum búin að samþykkja eitt review, það dettur þá úr lista á parent (AdminUI)
                 refresh();
@@ -230,6 +236,7 @@ public class AdminUIController implements Initializable {
             }
         });
         
+        // Sýna review-dialog
         dialog.show();
     }
     
