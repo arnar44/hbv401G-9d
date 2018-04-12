@@ -26,19 +26,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
-import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Window;
-import model.Review;
 
 /**
  * FXML Controller class
@@ -56,6 +52,7 @@ public class AdminUIController implements Initializable {
     @FXML
     private ListView<Ref> jReviewList;
     @FXML
+    private DayToursUIController parent;
     
     private ResultSet results;
     private int virkurIndex;
@@ -77,7 +74,7 @@ public class AdminUIController implements Initializable {
      * @throws IOException 
      */
     @FXML
-    public void tilBaka(ActionEvent event) {
+    public void tilBaka(ActionEvent event) throws SQLException {
         //loka admin glugga
         ((Node)(event.getSource())).getScene().getWindow().hide();
     }
@@ -123,6 +120,10 @@ public class AdminUIController implements Initializable {
         jNotendaNafn.setText(username);
         
         d.showAndWait();
+    }
+    
+    public AnchorPane getDialog(){
+        return adminDialog;
     }
     
     public void upphafsstilla(){
@@ -288,7 +289,7 @@ public class AdminUIController implements Initializable {
 }
 
     /**
-     * Heldur utanum title og id í lista.
+     * Heldur utanum title, id í lista.
      */
     class Ref {
         

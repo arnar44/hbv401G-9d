@@ -70,13 +70,17 @@ public class Gagnagrunnur {
         //Þetta verður sirka svona, sjáum til hverju við viljum leita af
         // Sækja verðbilið
         String[] price = params[0].split("-");
-        String stmt = "SELECT * FROM tours WHERE price BETWEEN ? AND ? AND location = ? AND difficulty = ?";
+        
+        //String stmt = "SELECT * FROM tours WHERE price BETWEEN ? AND ? AND location LIKE ? AND difficulty LIKE ?";
+        String stmt = "SELECT * FROM tours WHERE price BETWEEN ? AND ? AND departures LIKE ? AND level LIKE ? AND category LIKE ? AND pickup LIKE ?";
         PreparedStatement pstmt = conn.prepareStatement(stmt);
         
         pstmt.setString(1, price[0]);
         pstmt.setString(2, price[1]);
         pstmt.setString(3, params[1]);
         pstmt.setString(4, params[2]);
+        pstmt.setString(5, params[3]);
+        pstmt.setString(6, params[4]);
         
         ResultSet trips = pstmt.executeQuery();
         return trips;
@@ -348,6 +352,24 @@ public class Gagnagrunnur {
         if(conn == null) return null;
         
         String stmt = "SELECT DISTINCT level FROM tours";
+        PreparedStatement pstmt = conn.prepareStatement(stmt);
+        
+        ResultSet trips = pstmt.executeQuery();
+        
+        return trips;
+    }
+    
+     /**
+     * Skilar öllum staðsetningum
+     * @return
+     * @throws SQLException 
+     */
+    public ResultSet getLocation() throws SQLException{
+        // tengjust og skilum null ef ekki tókst að tengjast
+        conn = connect();
+        if(conn == null) return null;
+        
+        String stmt = "SELECT DISTINCT departures FROM tours";
         PreparedStatement pstmt = conn.prepareStatement(stmt);
         
         ResultSet trips = pstmt.executeQuery();
