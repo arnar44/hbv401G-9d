@@ -26,6 +26,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -338,86 +339,65 @@ public class TripUIController implements Initializable {
 
     @FXML
     private void addReview(ActionEvent event) throws SQLException{
-        ResultSet result = db.getAdminReview(refArray.get(virkurIndex).getId());
-        if(!result.next()){
-            //TODO villa kom upp, review finnst ekki
-        }
-        
         // Búa til dialog
         Dialog dialog = new Dialog<>();
-        dialog.setTitle("Review");
+        dialog.setTitle("Add review");
         dialog.setHeaderText("Review details");
 
         // takkar í dialog
-        ButtonType acceptButtonType = new ButtonType("Accept", ButtonBar.ButtonData.OK_DONE);
-        ButtonType declineButtonType = new ButtonType("Decline", ButtonBar.ButtonData.OK_DONE);
-        ButtonType backButtonType = new ButtonType("Back", ButtonBar.ButtonData.CANCEL_CLOSE);
-        dialog.getDialogPane().getButtonTypes().addAll(acceptButtonType, declineButtonType, backButtonType);
+        ButtonType acceptButtonType = new ButtonType("Submit", ButtonBar.ButtonData.OK_DONE);
+        ButtonType backButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        dialog.getDialogPane().getButtonTypes().addAll(acceptButtonType, backButtonType);
         
         // Búa til útlit og hluti í útliti
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
         
-        TextField tripId = new TextField();
-        tripId.setText(result.getString("tourId"));
         TextField name = new TextField();
-        name.setText(result.getString("name"));
         TextField email = new TextField();
-        email.setText(result.getString("email"));
-        TextField date = new TextField();
-        date.setText(result.getString("date"));
-        TextArea review = new TextArea();
-        review.setText(result.getString("review"));
+        TextArea reviewText = new TextArea();
         
-        tripId.setEditable(false);
-        name.setEditable(false);
-        email.setEditable(false);
-        date.setEditable(false);
-        review.setEditable(false);
-        
-        review.setPrefColumnCount(20);
-        review.setPrefRowCount(6);
+        reviewText.setPrefColumnCount(20);
+        reviewText.setPrefRowCount(6);
         
         // útlit dialogs
-        grid.add(new Label("Tour ID"), 0, 0);
-        grid.add(tripId, 2, 0);
-        grid.add(new Label("Name"), 0, 1);
-        grid.add(name, 2, 1);
-        grid.add(new Label("Email"), 0, 2);
-        grid.add(email, 2, 2);
-        grid.add(new Label("Date"), 0, 3);
-        grid.add(date, 2, 3);
-        grid.add(new Label("Review"), 0,4);
-        grid.add(review, 2, 5);
+        grid.add(new Label("Name"), 0, 0);
+        grid.add(name, 2, 0);
+        grid.add(new Label("Email"), 0, 1);
+        grid.add(email, 2, 1);
+        grid.add(new Label("Review"), 0,2);
+        grid.add(reviewText, 2, 2);
         
         //setja grid i dialog
         dialog.getDialogPane().setContent(grid);
         
         //Handlerar fyrir takka
         final Button acceptButton = (Button) dialog.getDialogPane().lookupButton(acceptButtonType);
-        final Button declineButton = (Button) dialog.getDialogPane().lookupButton(declineButtonType);
+        final Button cancel = (Button) dialog.getDialogPane().lookupButton(backButtonType);
         
-        acceptButton.addEventFilter(ActionEvent.ACTION, ae -> { 
+        acceptButton.addEventFilter(ActionEvent.ACTION, ae -> {
+            LocalDate date = LocalDate.now();
+            review = new Review(name.getText(), email.getText(), reviewText.getText(), date);
             try {
                 //samþykkja review
-                db.confirmReview(refArray.get(virkurIndex).getId());
-                //Erum búin að samþykkja eitt review, það dettur þá úr lista á parent (AdminUI)
-                refresh();
+                db.createReview(dayTour.getId(), review);
+                confirm();
             } catch (SQLException ex) {
                 Logger.getLogger(AdminUIController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        declineButton.addEventFilter(ActionEvent.ACTION, ae -> { 
-            try {
-                db.deleteReview(refArray.get(virkurIndex).getId());
-                //Erum búin að samþykkja eitt review, það dettur þá úr lista á parent (AdminUI)
-                refresh();
-            } catch (SQLException ex) {
-                Logger.getLogger(AdminUIController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+
+        dialog.showAndWait();
         
-        dialog.show();
+    }
+    
+    private void confirm() {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                "Your review has been received and will be confrimed shortly",
+                new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE));
+        alert.setHeaderText("Reveiw received");
+        alert.setTitle("Success");
+        alert.showAndWait();
     }
 }
