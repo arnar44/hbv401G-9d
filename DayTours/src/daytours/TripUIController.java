@@ -236,6 +236,7 @@ public class TripUIController implements Initializable {
     private void book() {
         Book booking = new Book();
         booking.setDb(this.db);
+        Boolean booked = true;
 
         String name = jpurchName.getText();
         String email = jpurchEmail.getText();
@@ -250,25 +251,35 @@ public class TripUIController implements Initializable {
         try {
             validation = booking.makeBooking(id, name, email, nbr, date);
         } catch (SQLException ex) {
-            // Hér væri gott að alerta bara
+            alertBooking("We are very sorry, something went wrong. Booking not recived","Booking error","Unsuccessful");
             Logger.getLogger(TripUIController.class.getName()).log(Level.SEVERE, null, ex);
             return;
         }
 
         if (validation[0] == 1) {
             jpurchName.setStyle("-fx-background-color: red;");
+            booked = false;
         } else {
             jpurchName.setStyle("-fx-background-color: white;");
         }
         if (validation[1] == 1) {
             jpurchEmail.setStyle("-fx-background-color: red;");
+            booked = false;
         } else {
             jpurchEmail.setStyle("-fx-background-color: white;");
         }
         if (validation[2] == 1) {
             jpurchDate.setStyle("-fx-background-color: red;");
+            booked = false;
         } else {
-            jpurchDate.setStyle("-fx-background-color: white;");
+            jpurchDate.setStyle("-fx-background-color: none;");
+        }
+        
+        if(booked){
+            alertBooking("Your booking has been recived! Have a nice trip", "Booking recived", "Success");
+            jpurchName.setText("");
+            jpurchEmail.setText("");
+            jpurchDate.setValue(null);
         }
     }
     
@@ -390,10 +401,19 @@ public class TripUIController implements Initializable {
     
     private void confirm() {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION,
-                "Your review has been received and will be confrimed shortly",
+                "Your review has been received and will be confirmed shortly",
                 new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE));
         alert.setHeaderText("Reveiw received");
         alert.setTitle("Success");
         alert.showAndWait();
+    }
+    
+    private void alertBooking(String info, String header, String title){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION,
+        info,
+        new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE));
+        alert.setHeaderText(header);
+        alert.setTitle(title);
+        alert.showAndWait();   
     }
 }
