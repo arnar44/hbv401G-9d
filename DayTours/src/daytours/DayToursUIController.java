@@ -129,13 +129,13 @@ public class DayToursUIController implements Initializable {
         
     // Búa til dialog
     Dialog dialog = new Dialog<>();
-    dialog.setTitle("Innskáning");
-    dialog.setHeaderText("Vinsamlegast skráðu þig inn");
+    dialog.setTitle("Login");
+    dialog.setHeaderText("Please login to your account");
 
     // takkar í dialog
 
-    ButtonType loginButtonType = new ButtonType("Innskrá", ButtonData.OK_DONE);
-    ButtonType tilBakaButtonType = new ButtonType("Til baka", ButtonData.CANCEL_CLOSE);
+    ButtonType loginButtonType = new ButtonType("Login", ButtonData.OK_DONE);
+    ButtonType tilBakaButtonType = new ButtonType("Close", ButtonData.CANCEL_CLOSE);
     dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, tilBakaButtonType);
 
         // Username og psw label og gluggar
@@ -144,13 +144,13 @@ public class DayToursUIController implements Initializable {
         grid.setVgap(10);
         
         TextField username = new TextField();
-        username.setPromptText("Notendanafn");
+        username.setPromptText("Username");
         PasswordField password = new PasswordField();
-        password.setPromptText("Lykilorð");
+        password.setPromptText("Password");
         // útlit dialogs
-        grid.add(new Label("Notendanafn:"), 0, 0);
+        grid.add(new Label("Username:"), 0, 0);
         grid.add(username, 1, 0);
-        grid.add(new Label("Lykilorð:"), 0, 1);
+        grid.add(new Label("Password:"), 0, 1);
         grid.add(password, 1, 1);
             
         dialog.getDialogPane().setContent(grid);
@@ -170,7 +170,7 @@ public class DayToursUIController implements Initializable {
                 // Ef enginn notandi fannst í gagnagrunni
                 if(!user.next()){
                     // Latum notanda fá eftirfarandi skilaboð og hreinsum reiti
-                    dialog.setHeaderText("Rangt notendanafn eða lykilorð");
+                    dialog.setHeaderText("Username or password incorrect");
                     username.setText("");
                     password.setText("");
                     // consumeum-enventinn að ýtt var á login-takkann svo dialogin haldist opinn
@@ -178,7 +178,7 @@ public class DayToursUIController implements Initializable {
                     return;
                 }
             } catch (SQLException ex) {
-                System.out.println("Tenging við gagnagrunn næst ekki");
+                System.out.println("Unable to connect to to database");
                 Logger.getLogger(DayToursUIController.class.getName()).log(Level.SEVERE, null, ex);
 
                 return;

@@ -43,6 +43,13 @@ public class Book {
         
     }
     
+    /**
+     * 
+     * @param name
+     * @param email
+     * @param date
+     * @return fylki af int sem segir til um hvar er villa (ef það er)
+     */
     private int[] validate(String name, String email, LocalDate date) {
         int[] validation = new int[3];
         Arrays.fill(validation, 0);
