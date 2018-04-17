@@ -21,19 +21,19 @@ public class Trip {
 	}
 
     public String getMeet() {
-        return "Meet on location: " + meet;
+        return  meet;
     }
 
     public String getPickup() {
-        return "Pickup: " + pickup;
+        return pickup;
     }
 
     public String getAvailability() {
-        return "Available: " + availability;
+        return availability;
     }
 
     public String getCategory() {
-        return "Type: " + category;
+        return category;
     }
 
     public int getId() {
@@ -45,15 +45,15 @@ public class Trip {
     }
 
     public String getLocation() {
-        return "Departure: " + location;
+        return location;
     }
 
     public String getDuration() {
-    	return "Duration: " + duration;
+    	return  duration;
     }
 
     public String getDifficulty() {
-    	return "Level: " + difficulty;
+    	return  difficulty;
     }
 
     public String getItinirary() {
@@ -61,6 +61,6 @@ public class Trip {
     }
         
     public String getPrice() {
-	return "Price: " + price + " ISK";
+	return price;
     }
 }

@@ -177,10 +177,6 @@ public class TripUIController implements Initializable {
         dialog.show();
     }
 
-    private void jbookTrip(ActionEvent event) {
-        book();
-    }
-
     /**
      * Refreshar lista
      *
@@ -322,14 +318,14 @@ public class TripUIController implements Initializable {
         jtitle.setText(trip.getTitle());
         jtitle.setWrapText(true);
         jdescription.setText(trip.getItinirary());
-        jduration.setText(trip.getDuration());
-        jdifficulty.setText(trip.getDifficulty());
-        jlocation.setText(trip.getLocation());
-        jprice.setText(trip.getPrice());
-        jmeet.setText(trip.getMeet());
-        javailability.setText(trip.getAvailability());
-        jcategory.setText(trip.getCategory());
-        jpickup.setText(trip.getPickup());
+        jduration.setText("Duration: " + trip.getDuration());
+        jdifficulty.setText("Lelev: " + trip.getDifficulty());
+        jlocation.setText("Departure: " + trip.getLocation());
+        jprice.setText("Price: " + trip.getPrice() + " ISK");
+        jmeet.setText("Meet on location: " + trip.getMeet());
+        javailability.setText("Available: " + trip.getAvailability());
+        jcategory.setText("Type: " + trip.getCategory());
+        jpickup.setText("Pickup: " + trip.getPickup());
     }
 
     @FXML
@@ -378,7 +374,7 @@ public class TripUIController implements Initializable {
         
         acceptButton.addEventFilter(ActionEvent.ACTION, ae -> {
             LocalDate date = LocalDate.now();
-            review = new Review(name.getText(), email.getText(), reviewText.getText(), date);
+            review = new Review(name.getText(), reviewText.getText(), email.getText(), date);
             try {
                 //samþykkja review
                 db.createReview(dayTour.getId(), review);
